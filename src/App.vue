@@ -18,10 +18,10 @@ const tableColumns = [
 ]
 
 const tableRows = [
-  { name: 'Alice Johnson', role: 'Engineer', status: 'Active', email: 'alice@example.com' },
-  { name: 'Bob Smith', role: 'Designer', status: 'On Leave', email: 'bob@example.com' },
-  { name: 'Carol Williams', role: 'Manager', status: 'Active', email: 'carol@example.com' },
-  { name: 'David Brown', role: 'Engineer', status: 'Inactive', email: 'david@example.com' },
+  { name: 'Alice Johnson', role: 'Engineer', status: 'Active', email: 'alice@example.com', department: 'Engineering', joined: 'Jan 2023' },
+  { name: 'Bob Smith', role: 'Designer', status: 'On Leave', email: 'bob@example.com', department: 'Design', joined: 'Mar 2022' },
+  { name: 'Carol Williams', role: 'Manager', status: 'Active', email: 'carol@example.com', department: 'Product', joined: 'Aug 2021' },
+  { name: 'David Brown', role: 'Engineer', status: 'Inactive', email: 'david@example.com', department: 'Engineering', joined: 'Nov 2023' },
 ]
 
 const formName = ref('')
@@ -149,11 +149,27 @@ const roles = ['Engineer', 'Designer', 'Product Manager', 'Data Analyst', 'DevOp
       <h2 class="text-xl font-semibold text-surface-800">Table</h2>
       <Card variant="bordered" class="p-0">
         <template #header><span class="font-semibold">Team Members</span></template>
-        <Table :columns="tableColumns" :rows="tableRows">
+        <Table :columns="tableColumns" :rows="tableRows" expandable>
           <template #status="{ value }">
             <Badge :variant="value === 'Active' ? 'success' : value === 'On Leave' ? 'warning' : 'default'" size="sm">
               {{ value }}
             </Badge>
+          </template>
+          <template #expanded="{ row }">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div>
+                <p class="text-surface-500">Email</p>
+                <p class="font-medium text-surface-800">{{ row.email }}</p>
+              </div>
+              <div>
+                <p class="text-surface-500">Department</p>
+                <p class="font-medium text-surface-800">{{ row.department }}</p>
+              </div>
+              <div>
+                <p class="text-surface-500">Joined</p>
+                <p class="font-medium text-surface-800">{{ row.joined }}</p>
+              </div>
+            </div>
           </template>
           <template #footer>
             <div class="flex items-center justify-between text-sm text-surface-500">
