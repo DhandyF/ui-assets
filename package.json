@@ -1,0 +1,43 @@
+{
+  "name": "ui-assets",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Vue 3 + Tailwind CSS UI component library",
+  "main": "./dist/ui-assets.cjs",
+  "module": "./dist/ui-assets.js",
+  "exports": {
+    ".": {
+      "import": "./dist/ui-assets.js",
+      "require": "./dist/ui-assets.cjs"
+    },
+    "./style.css": "./dist/style.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prepare": "npm run build"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.2.4",
+    "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.6",
+    "vite": "^8.0.8",
+    "vite-plugin-vue-devtools": "^8.1.1",
+    "vue": "^3.5.32"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}
