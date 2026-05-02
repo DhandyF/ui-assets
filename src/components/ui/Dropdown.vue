@@ -1,6 +1,6 @@
 <template>
   <div class="relative inline-block" ref="dropdownRef">
-    <div @click="toggle">
+    <div class="cursor-pointer" @click="toggle">
       <slot name="trigger">
         <button class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white border border-surface-300 rounded-lg hover:bg-surface-50 transition-colors">
           {{ label }}

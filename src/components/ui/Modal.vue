@@ -18,7 +18,7 @@
               </slot>
               <button
                 v-if="closable"
-                class="p-1.5 rounded-lg text-surface-400 hover:text-surface-600 hover:bg-surface-100 transition-colors"
+                class="p-1.5 rounded-lg cursor-pointer text-surface-400 hover:text-surface-600 hover:bg-surface-100 transition-colors"
                 @click="close"
               >
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
