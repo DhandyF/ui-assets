@@ -32,7 +32,7 @@ defineEmits(['update:modelValue'])
 function tabClasses(key) {
   const isActive = props.modelValue === key
   return [
-    'px-4 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap',
+    'px-4 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap cursor-pointer',
     isActive
       ? 'border-primary-600 text-primary-700'
       : 'border-transparent text-surface-500 hover:text-surface-700 hover:border-surface-300',

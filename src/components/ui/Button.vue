@@ -47,7 +47,7 @@ const variantClasses = {
 }
 
 const buttonClasses = computed(() => [
-  'inline-flex items-center justify-center font-medium transition-all duration-150 rounded-lg',
+  'inline-flex items-center justify-center font-medium transition-all duration-150 rounded-lg cursor-pointer',
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500',
   'disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none',
   sizeClasses[props.size],

@@ -56,7 +56,7 @@ var E = ["disabled"], D = {
 			outline: "border border-surface-300 text-surface-700 hover:bg-surface-50 active:bg-surface-100",
 			ghost: "text-surface-700 hover:bg-surface-100 active:bg-surface-200"
 		}, a = i(() => [
-			"inline-flex items-center justify-center font-medium transition-all duration-150 rounded-lg",
+			"inline-flex items-center justify-center font-medium transition-all duration-150 rounded-lg cursor-pointer",
 			"focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500",
 			"disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none",
 			n[t.size],
@@ -297,7 +297,7 @@ var pe = { class: "mt-0.5 shrink-0" }, me = { class: "flex-1 min-w-0" }, he = {
 				c("span", pe, x(i[e.type]), 1),
 				c("div", me, [e.title ? (g(), s("p", he, x(e.title), 1)) : o("", !0), c("p", ge, x(e.message), 1)]),
 				c("button", {
-					class: "shrink-0 text-current opacity-50 hover:opacity-100 transition-opacity",
+					class: "shrink-0 cursor-pointer text-current opacity-50 hover:opacity-100 transition-opacity",
 					onClick: (t) => S(q)(e.id)
 				}, [...d[0] ||= [c("svg", {
 					class: "w-4 h-4",
@@ -541,7 +541,7 @@ var pe = { class: "mt-0.5 shrink-0" }, me = { class: "flex-1 min-w-0" }, he = {
 				}, [
 					r.$slots.header || e.title ? (g(), s("div", Oe, [b(r.$slots, "header", {}, () => [c("h2", ke, x(e.title), 1)]), e.closable ? (g(), s("button", {
 						key: 0,
-						class: "p-1.5 rounded-lg text-surface-400 hover:text-surface-600 hover:bg-surface-100 transition-colors",
+						class: "p-1.5 rounded-lg cursor-pointer text-surface-400 hover:text-surface-600 hover:bg-surface-100 transition-colors",
 						onClick: f
 					}, [...i[0] ||= [c("svg", {
 						class: "w-5 h-5",
@@ -608,7 +608,7 @@ var pe = { class: "mt-0.5 shrink-0" }, me = { class: "flex-1 min-w-0" }, he = {
 			c("div", Ne, [e.title ? (g(), s("p", Pe, x(e.title), 1)) : o("", !0), c("p", Fe, [b(t.$slots, "default")])]),
 			e.closable ? (g(), s("button", {
 				key: 0,
-				class: "shrink-0 p-1 rounded-md opacity-60 hover:opacity-100 transition-opacity",
+				class: "shrink-0 p-1 rounded-md cursor-pointer opacity-60 hover:opacity-100 transition-opacity",
 				onClick: r[0] ||= (e) => t.$emit("close")
 			}, [...r[1] ||= [c("svg", {
 				class: "w-4 h-4",
@@ -666,7 +666,10 @@ var pe = { class: "mt-0.5 shrink-0" }, me = { class: "flex-1 min-w-0" }, he = {
 			class: "relative inline-block",
 			ref_key: "dropdownRef",
 			ref: i
-		}, [c("div", { onClick: f }, [b(t.$slots, "trigger", {}, () => [c("button", Ie, [l(x(e.label) + " ", 1), m[0] ||= c("svg", {
+		}, [c("div", {
+			class: "cursor-pointer",
+			onClick: f
+		}, [b(t.$slots, "trigger", {}, () => [c("button", Ie, [l(x(e.label) + " ", 1), m[0] ||= c("svg", {
 			class: "w-4 h-4 text-surface-500",
 			fill: "none",
 			viewBox: "0 0 24 24",
@@ -740,7 +743,7 @@ var pe = { class: "mt-0.5 shrink-0" }, me = { class: "flex-1 min-w-0" }, he = {
 	setup(t) {
 		let n = t;
 		function r(e) {
-			return ["px-4 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap", n.modelValue === e ? "border-primary-600 text-primary-700" : "border-transparent text-surface-500 hover:text-surface-700 hover:border-surface-300"];
+			return ["px-4 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap cursor-pointer", n.modelValue === e ? "border-primary-600 text-primary-700" : "border-transparent text-surface-500 hover:text-surface-700 hover:border-surface-300"];
 		}
 		return (n, i) => (g(), s("div", null, [c("div", Be, [(g(!0), s(e, null, y(t.tabs, (e) => (g(), s("button", {
 			key: e.key,
@@ -913,7 +916,7 @@ var pe = { class: "mt-0.5 shrink-0" }, me = { class: "flex-1 min-w-0" }, he = {
 				onClick: R
 			}, [c("span", { class: p(["flex-1 truncate text-left", A.value ? "text-surface-800" : "text-surface-400"]) }, x(A.value ? j.value : t.placeholder), 3), c("div", Je, [t.clearable && A.value ? (g(), s("button", {
 				key: 0,
-				class: "p-0.5 rounded text-surface-400 hover:text-surface-600 hover:bg-surface-100 transition-colors",
+				class: "p-0.5 rounded cursor-pointer text-surface-400 hover:text-surface-600 hover:bg-surface-100 transition-colors",
 				onClick: te(B, ["stop"])
 			}, [...i[1] ||= [c("svg", {
 				class: "w-3.5 h-3.5",
