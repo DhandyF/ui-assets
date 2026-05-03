@@ -22,16 +22,16 @@
           </th>
         </tr>
       </thead>
-      <template v-for="(row, i) in sortedRows" :key="i">
+      <template v-for="(row, i) in paginatedRows" :key="i">
         <tr
           class="border-b border-surface-100 hover:bg-surface-50/50 transition-colors"
           :class="{ 'cursor-pointer': expandable }"
-          @click="expandable && toggleExpand(i)"
+          @click="expandable && toggleExpand(rowId(row, i))"
         >
           <td v-if="expandable" class="w-10 px-4 py-3">
             <svg
               class="w-4 h-4 text-surface-400 transition-transform duration-200"
-              :class="{ 'rotate-90': expandedRows.has(i) }"
+              :class="{ 'rotate-90': expandedRows.has(rowId(row, i)) }"
               fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
             ><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
           </td>
@@ -41,21 +41,57 @@
             </slot>
           </td>
         </tr>
-        <tr v-if="expandable && expandedRows.has(i)">
+        <tr v-if="expandable && expandedRows.has(rowId(row, i))">
           <td :colspan="columns.length + 1" class="p-0">
             <Transition name="expand">
-              <div v-if="expandedRows.has(i)" class="px-6 py-4 bg-surface-50/60 border-b border-surface-100">
+              <div v-if="expandedRows.has(rowId(row, i))" class="px-6 py-4 bg-surface-50/60 border-b border-surface-100">
                 <slot name="expanded" :row="row" :index="i" />
               </div>
             </Transition>
           </td>
         </tr>
       </template>
-      <tfoot v-if="$slots.footer">
+      <tfoot v-if="$slots.footer || totalPages > 1">
         <tr class="bg-surface-50">
           <td v-if="expandable" class="px-4 py-3"></td>
           <td :colspan="columns.length" class="px-4 py-3">
-            <slot name="footer" />
+            <slot name="footer">
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-surface-500">
+                  {{ (currentPage - 1) * perPage + 1 }}-{{ currentPage === totalPages ? sortedRows.length : currentPage * perPage }} of {{ sortedRows.length }}
+                </span>
+                <div class="flex items-center gap-1">
+                  <button
+                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer"
+                    :class="currentPage === 1 ? 'text-surface-300 cursor-not-allowed' : 'text-surface-600 hover:bg-surface-100'"
+                    :disabled="currentPage === 1"
+                    @click="currentPage--"
+                  >
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                  </button>
+                  <template v-for="page in visiblePages" :key="page">
+                    <button
+                      v-if="page === '...'"
+                      class="inline-flex items-center justify-center w-8 h-8 text-sm text-surface-400"
+                    >&hellip;</button>
+                    <button
+                      v-else
+                      class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+                      :class="page === currentPage ? 'bg-primary-600 text-white' : 'text-surface-600 hover:bg-surface-100'"
+                      @click="currentPage = page"
+                    >{{ page }}</button>
+                  </template>
+                  <button
+                    class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer"
+                    :class="currentPage === totalPages ? 'text-surface-300 cursor-not-allowed' : 'text-surface-600 hover:bg-surface-100'"
+                    :disabled="currentPage === totalPages"
+                    @click="currentPage++"
+                  >
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                  </button>
+                </div>
+              </div>
+            </slot>
           </td>
         </tr>
       </tfoot>
@@ -64,17 +100,56 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 const props = defineProps({
   columns: { type: Array, required: true },
   rows: { type: Array, default: () => [] },
   expandable: { type: Boolean, default: false },
+  perPage: { type: Number, default: 10 },
 })
 
 const sortKey = ref(null)
 const sortOrder = ref('asc')
+const currentPage = ref(1)
 const expandedRows = ref(new Set())
+
+const sortedRows = computed(() => {
+  if (!sortKey.value) return props.rows
+  return [...props.rows].sort((a, b) => {
+    const aVal = a[sortKey.value]
+    const bVal = b[sortKey.value]
+    const result = aVal < bVal ? -1 : aVal > bVal ? 1 : 0
+    return sortOrder.value === 'asc' ? result : -result
+  })
+})
+
+const totalPages = computed(() => Math.max(1, Math.ceil(sortedRows.value.length / props.perPage)))
+
+const paginatedRows = computed(() => {
+  const start = (currentPage.value - 1) * props.perPage
+  return sortedRows.value.slice(start, start + props.perPage)
+})
+
+const visiblePages = computed(() => {
+  const total = totalPages.value
+  const current = currentPage.value
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
+
+  const pages = []
+  pages.push(1)
+  if (current > 3) pages.push('...')
+  for (let i = Math.max(2, current - 1); i <= Math.min(total - 1, current + 1); i++) {
+    pages.push(i)
+  }
+  if (current < total - 2) pages.push('...')
+  pages.push(total)
+  return pages
+})
+
+function rowId(row, index) {
+  return row.id ?? index + (currentPage.value - 1) * props.perPage
+}
 
 function toggleSort(key) {
   if (sortKey.value === key) {
@@ -85,24 +160,23 @@ function toggleSort(key) {
   }
 }
 
-function toggleExpand(index) {
+function toggleExpand(id) {
   const next = new Set(expandedRows.value)
-  if (next.has(index)) {
-    next.delete(index)
+  if (next.has(id)) {
+    next.delete(id)
   } else {
-    next.add(index)
+    next.add(id)
   }
   expandedRows.value = next
 }
 
-const sortedRows = computed(() => {
-  if (!sortKey.value) return props.rows
-  return [...props.rows].sort((a, b) => {
-    const aVal = a[sortKey.value]
-    const bVal = b[sortKey.value]
-    const result = aVal < bVal ? -1 : aVal > bVal ? 1 : 0
-    return sortOrder.value === 'asc' ? result : -result
-  })
+watch(totalPages, (total) => {
+  if (currentPage.value > total) currentPage.value = total
+})
+
+watch(() => props.rows, () => {
+  currentPage.value = 1
+  expandedRows.value = new Set()
 })
 </script>
 
