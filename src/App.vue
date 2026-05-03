@@ -149,7 +149,7 @@ const roles = ['Engineer', 'Designer', 'Product Manager', 'Data Analyst', 'DevOp
       <h2 class="text-xl font-semibold text-surface-800">Table</h2>
       <Card variant="bordered" class="p-0">
         <template #header><span class="font-semibold">Team Members</span></template>
-        <Table :columns="tableColumns" :rows="tableRows" expandable>
+        <Table :columns="tableColumns" :rows="tableRows" expandable :per-page="3">
           <template #status="{ value }">
             <Badge :variant="value === 'Active' ? 'success' : value === 'On Leave' ? 'warning' : 'default'" size="sm">
               {{ value }}
@@ -168,15 +168,6 @@ const roles = ['Engineer', 'Designer', 'Product Manager', 'Data Analyst', 'DevOp
               <div>
                 <p class="text-surface-500">Joined</p>
                 <p class="font-medium text-surface-800">{{ row.joined }}</p>
-              </div>
-            </div>
-          </template>
-          <template #footer>
-            <div class="flex items-center justify-between text-sm text-surface-500">
-              <span>Showing 4 of 24 members</span>
-              <div class="flex gap-1">
-                <Button size="xs" variant="outline">Previous</Button>
-                <Button size="xs" variant="primary">Next</Button>
               </div>
             </div>
           </template>
