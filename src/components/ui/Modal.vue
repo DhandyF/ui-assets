@@ -4,15 +4,16 @@
       <div
         v-if="modelValue"
         class="fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4"
+        :class="overlayClass"
         @click.self="closeIfAllowed"
       >
         <Transition name="modal-content">
           <div
             v-if="modelValue"
-            :class="sizeClasses[size]"
+            :class="[sizeClasses[size], contentClass]"
             class="bg-white rounded-2xl shadow-2xl w-full flex flex-col overflow-hidden animate-in"
           >
-            <div v-if="$slots.header || title" class="flex items-center justify-between px-6 py-4 border-b border-surface-200">
+            <div v-if="$slots.header || title" class="flex items-center justify-between px-6 py-4 border-b border-surface-200" :class="headerClass">
               <slot name="header">
                 <h2 class="text-lg font-semibold text-surface-900">{{ title }}</h2>
               </slot>
@@ -24,10 +25,10 @@
                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
               </button>
             </div>
-            <div class="px-6 py-4 overflow-y-auto flex-1">
+            <div class="px-6 py-4 overflow-y-auto flex-1" :class="bodyClass">
               <slot />
             </div>
-            <div v-if="$slots.footer" class="px-6 py-4 border-t border-surface-200 bg-surface-50">
+            <div v-if="$slots.footer" class="px-6 py-4 border-t border-surface-200 bg-surface-50" :class="footerClass">
               <slot name="footer" />
             </div>
           </div>
@@ -50,6 +51,11 @@ const props = defineProps({
   },
   closable: { type: Boolean, default: true },
   closeOnOverlay: { type: Boolean, default: true },
+  contentClass: { type: String, default: '' },
+  overlayClass: { type: String, default: '' },
+  headerClass: { type: String, default: '' },
+  bodyClass: { type: String, default: '' },
+  footerClass: { type: String, default: '' },
 })
 
 const emit = defineEmits(['update:modelValue', 'close'])
