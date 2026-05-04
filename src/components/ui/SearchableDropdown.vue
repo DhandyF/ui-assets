@@ -5,6 +5,7 @@
       <span v-if="required" class="text-danger">*</span>
     </label>
     <button
+      ref="triggerRef"
       :class="triggerClasses"
       :disabled="disabled"
       @click="toggle"
@@ -23,46 +24,50 @@
         <svg class="w-4 h-4 text-surface-500 transition-transform duration-150" :class="{ 'rotate-180': isOpen }" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
       </div>
     </button>
-    <Transition name="searchable-dropdown">
-      <div
-        v-if="isOpen"
-        class="absolute z-50 mt-1 bg-white border border-surface-200 rounded-xl shadow-lg overflow-hidden w-full"
-      >
-        <div class="border-b border-surface-200 p-2">
-          <div class="flex items-center gap-2 px-3 py-1.5 bg-surface-50 rounded-lg">
-            <svg class="w-4 h-4 text-surface-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-            <input
-              ref="inputRef"
-              v-model="search"
-              class="w-full bg-transparent outline-none text-sm placeholder:text-surface-400"
-              :placeholder="searchPlaceholder"
-              @keydown="handleKeydown"
-            />
+    <Teleport to="body">
+      <Transition name="searchable-dropdown" @before-enter="positionDropdown" @enter="positionDropdown">
+        <div
+          v-if="isOpen"
+          ref="dropdownRef"
+          class="fixed z-[9999] bg-white border border-surface-200 rounded-xl shadow-lg overflow-hidden"
+          :style="dropdownStyle"
+        >
+          <div class="border-b border-surface-200 p-2">
+            <div class="flex items-center gap-2 px-3 py-1.5 bg-surface-50 rounded-lg">
+              <svg class="w-4 h-4 text-surface-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input
+                ref="inputRef"
+                v-model="search"
+                class="w-full bg-transparent outline-none text-sm placeholder:text-surface-400"
+                :placeholder="searchPlaceholder"
+                @keydown="handleKeydown"
+              />
+            </div>
           </div>
+          <div v-if="filteredOptions.length === 0" class="px-4 py-3 text-sm text-surface-400 text-center">
+            {{ emptyText }}
+          </div>
+          <ul class="max-h-60 overflow-y-auto py-1" ref="listRef">
+            <li
+              v-for="(option, index) in filteredOptions"
+              :key="optionValue(option)"
+              :class="optionClasses(index)"
+              @click="select(option)"
+              @mouseenter="highlightedIndex = index"
+            >
+              <slot name="option" :option="option" :selected="isSelected(option)">
+                <span class="flex-1 truncate">{{ optionLabel(option) }}</span>
+                <svg
+                  v-if="isSelected(option)"
+                  class="w-4 h-4 text-primary-600 shrink-0"
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                ><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              </slot>
+            </li>
+          </ul>
         </div>
-        <div v-if="filteredOptions.length === 0" class="px-4 py-3 text-sm text-surface-400 text-center">
-          {{ emptyText }}
-        </div>
-        <ul class="max-h-60 overflow-y-auto py-1" ref="listRef">
-          <li
-            v-for="(option, index) in filteredOptions"
-            :key="optionValue(option)"
-            :class="optionClasses(index)"
-            @click="select(option)"
-            @mouseenter="highlightedIndex = index"
-          >
-            <slot name="option" :option="option" :selected="isSelected(option)">
-              <span class="flex-1 truncate">{{ optionLabel(option) }}</span>
-              <svg
-                v-if="isSelected(option)"
-                class="w-4 h-4 text-primary-600 shrink-0"
-                fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
-              ><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-            </slot>
-          </li>
-        </ul>
-      </div>
-    </Transition>
+      </Transition>
+    </Teleport>
     <p v-if="error" class="text-sm text-danger mt-1">{{ error }}</p>
   </div>
 </template>
@@ -92,7 +97,10 @@ const search = ref('')
 const highlightedIndex = ref(-1)
 const inputRef = ref(null)
 const containerRef = ref(null)
+const triggerRef = ref(null)
+const dropdownRef = ref(null)
 const listRef = ref(null)
+const dropdownStyle = ref({})
 
 const hasValue = computed(() => props.modelValue !== null && props.modelValue !== undefined && props.modelValue !== '')
 
@@ -136,11 +144,24 @@ function optionClasses(index) {
   ]
 }
 
+function positionDropdown() {
+  if (!triggerRef.value) return
+  const rect = triggerRef.value.getBoundingClientRect()
+  dropdownStyle.value = {
+    top: `${rect.bottom + 4}px`,
+    left: `${rect.left}px`,
+    width: `${rect.width}px`,
+  }
+}
+
 function toggle() {
   if (props.disabled) return
   isOpen.value = !isOpen.value
   if (isOpen.value) {
-    nextTick(() => inputRef.value?.focus())
+    nextTick(() => {
+      positionDropdown()
+      inputRef.value?.focus()
+    })
   }
 }
 
@@ -205,13 +226,27 @@ watch(search, (q) => {
 })
 
 function handleClickOutside(e) {
-  if (containerRef.value && !containerRef.value.contains(e.target)) {
-    isOpen.value = false
-  }
+  const target = e.target
+  if (containerRef.value?.contains(target)) return
+  if (dropdownRef.value?.contains(target)) return
+  if (inputRef.value === target) return
+  isOpen.value = false
 }
 
-onMounted(() => document.addEventListener('click', handleClickOutside))
-onUnmounted(() => document.removeEventListener('click', handleClickOutside))
+function handleScroll() {
+  if (isOpen.value) positionDropdown()
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside, true)
+  window.addEventListener('scroll', handleScroll, true)
+  window.addEventListener('resize', handleScroll)
+})
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside, true)
+  window.removeEventListener('scroll', handleScroll, true)
+  window.removeEventListener('resize', handleScroll)
+})
 </script>
 
 <style>
