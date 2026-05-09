@@ -256,6 +256,14 @@ const onRowClick = (row) => {
       </div>
       <Modal v-model="showModal" title="Confirm Action" size="md">
         <p class="text-surface-600">Are you sure you want to proceed? This action cannot be undone.</p>
+        <SearchableDropdown
+            v-model="selectedCountry"
+            :options="countries"
+            label="Country"
+            placeholder="Search countries..."
+            clearable
+            required
+          />
         <template #footer>
           <div class="flex justify-end gap-3">
             <Button variant="outline" @click="showModal = false">Cancel</Button>
