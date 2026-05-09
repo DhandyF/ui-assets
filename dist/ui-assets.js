@@ -1,9 +1,9 @@
-import { Fragment as e, Teleport as t, Transition as n, TransitionGroup as r, computed as i, createBlock as a, createCommentVNode as o, createElementBlock as s, createElementVNode as c, createTextVNode as l, createVNode as u, inject as d, nextTick as f, normalizeClass as p, normalizeStyle as m, onMounted as h, onUnmounted as g, openBlock as _, provide as v, ref as y, renderList as b, renderSlot as x, toDisplayString as S, unref as C, vModelText as w, watch as T, withCtx as E, withDirectives as D, withModifiers as O } from "vue";
+import { Fragment as e, Teleport as t, Transition as n, TransitionGroup as r, computed as i, createBlock as a, createCommentVNode as o, createElementBlock as s, createElementVNode as c, createTextVNode as l, createVNode as u, inject as d, nextTick as f, normalizeClass as p, normalizeStyle as m, onMounted as h, onUnmounted as g, openBlock as _, provide as v, ref as y, renderList as b, renderSlot as x, toDisplayString as S, unref as C, vModelText as ee, watch as w, withCtx as T, withDirectives as E, withModifiers as D } from "vue";
 //#region src/components/ui/Button.vue
-var k = ["disabled"], A = {
+var O = ["disabled"], k = {
 	key: 0,
 	class: "mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent"
-}, j = {
+}, A = {
 	__name: "Button",
 	props: {
 		variant: {
@@ -67,15 +67,15 @@ var k = ["disabled"], A = {
 			class: p(a.value),
 			disabled: e.disabled,
 			onClick: n[0] ||= (e) => t.$emit("click", e)
-		}, [e.loading ? (_(), s("span", A)) : o("", !0), x(t.$slots, "default")], 10, k));
+		}, [e.loading ? (_(), s("span", k)) : o("", !0), x(t.$slots, "default")], 10, O));
 	}
-}, M = {
+}, j = {
 	key: 0,
 	class: "border-b border-surface-200 px-6 py-4"
-}, N = { class: "px-6 py-4" }, P = {
+}, M = { class: "px-6 py-4" }, N = {
 	key: 1,
 	class: "border-t border-surface-200 px-6 py-4"
-}, F = {
+}, P = {
 	__name: "Card",
 	props: { variant: {
 		type: String,
@@ -95,42 +95,42 @@ var k = ["disabled"], A = {
 			interactive: "bg-white shadow-sm hover:shadow-md transition-shadow cursor-pointer border border-surface-200"
 		}, r = i(() => ["rounded-xl overflow-hidden", n[t.variant]]);
 		return (e, t) => (_(), s("div", { class: p(r.value) }, [
-			e.$slots.header ? (_(), s("div", M, [x(e.$slots, "header")])) : o("", !0),
-			c("div", N, [x(e.$slots, "default")]),
-			e.$slots.footer ? (_(), s("div", P, [x(e.$slots, "footer")])) : o("", !0)
+			e.$slots.header ? (_(), s("div", j, [x(e.$slots, "header")])) : o("", !0),
+			c("div", M, [x(e.$slots, "default")]),
+			e.$slots.footer ? (_(), s("div", N, [x(e.$slots, "footer")])) : o("", !0)
 		], 2));
 	}
-}, I = { class: "overflow-x-auto" }, L = { class: "w-full text-left text-sm" }, R = { class: "border-b border-surface-200 bg-surface-50" }, ee = {
+}, F = { class: "overflow-x-auto" }, I = { class: "w-full text-left text-sm" }, L = { class: "border-b border-surface-200 bg-surface-50" }, te = {
 	key: 0,
 	class: "w-10 px-4 py-3"
-}, z = ["onClick"], B = { class: "inline-flex items-center gap-1.5" }, V = {
+}, R = ["onClick"], z = { class: "inline-flex items-center gap-1.5" }, B = {
 	key: 0,
 	class: "text-surface-400"
-}, H = {
+}, V = {
 	key: 0,
 	class: "w-3.5 h-3.5 text-primary-600",
 	fill: "none",
 	viewBox: "0 0 24 24",
 	stroke: "currentColor",
 	"stroke-width": "2"
-}, U = {
+}, H = {
 	key: 1,
 	class: "w-3.5 h-3.5 text-primary-600",
 	fill: "none",
 	viewBox: "0 0 24 24",
 	stroke: "currentColor",
 	"stroke-width": "2"
-}, W = {
+}, U = {
 	key: 2,
 	class: "w-3.5 h-3.5",
 	fill: "none",
 	viewBox: "0 0 24 24",
 	stroke: "currentColor",
 	"stroke-width": "2"
-}, G = ["onClick"], K = {
+}, W = ["onClick"], G = {
 	key: 0,
 	class: "w-10 px-4 py-3"
-}, q = { key: 0 }, te = ["colspan"], ne = {
+}, K = { key: 0 }, q = ["colspan"], ne = {
 	key: 0,
 	class: "px-6 py-4 bg-surface-50/60 border-b border-surface-100"
 }, J = { key: 0 }, Y = { class: "bg-surface-50" }, X = {
@@ -157,60 +157,68 @@ var k = ["disabled"], A = {
 		perPage: {
 			type: Number,
 			default: 10
+		},
+		clickable: {
+			type: Boolean,
+			default: !1
 		}
 	},
-	setup(t) {
-		let r = t, a = y(null), d = y("asc"), f = y(1), m = y(/* @__PURE__ */ new Set()), h = i(() => a.value ? [...r.rows].sort((e, t) => {
-			let n = e[a.value], r = t[a.value], i = n < r ? -1 : +(n > r);
-			return d.value === "asc" ? i : -i;
-		}) : r.rows), g = i(() => Math.max(1, Math.ceil(h.value.length / r.perPage))), v = i(() => {
-			let e = (f.value - 1) * r.perPage;
-			return h.value.slice(e, e + r.perPage);
-		}), C = i(() => {
-			let e = g.value, t = f.value;
+	emits: ["row-click"],
+	setup(t, { emit: r }) {
+		let a = t, d = r, f = y(null), m = y("asc"), h = y(1), g = y(/* @__PURE__ */ new Set()), v = i(() => f.value ? [...a.rows].sort((e, t) => {
+			let n = e[f.value], r = t[f.value], i = n < r ? -1 : +(n > r);
+			return m.value === "asc" ? i : -i;
+		}) : a.rows), C = i(() => Math.max(1, Math.ceil(v.value.length / a.perPage))), ee = i(() => {
+			let e = (h.value - 1) * a.perPage;
+			return v.value.slice(e, e + a.perPage);
+		}), E = i(() => {
+			let e = C.value, t = h.value;
 			if (e <= 7) return Array.from({ length: e }, (e, t) => t + 1);
 			let n = [];
 			n.push(1), t > 3 && n.push("...");
 			for (let r = Math.max(2, t - 1); r <= Math.min(e - 1, t + 1); r++) n.push(r);
 			return t < e - 2 && n.push("..."), n.push(e), n;
 		});
-		function w(e, t) {
-			return e.id ?? t + (f.value - 1) * r.perPage;
-		}
-		function D(e) {
-			a.value === e ? d.value = d.value === "asc" ? "desc" : "asc" : (a.value = e, d.value = "asc");
+		function D(e, t) {
+			return e.id ?? t + (h.value - 1) * a.perPage;
 		}
 		function O(e) {
-			let t = new Set(m.value);
-			t.has(e) ? t.delete(e) : t.add(e), m.value = t;
+			f.value === e ? m.value = m.value === "asc" ? "desc" : "asc" : (f.value = e, m.value = "asc");
 		}
-		return T(g, (e) => {
-			f.value > e && (f.value = e);
-		}), T(() => r.rows, () => {
-			f.value = 1, m.value = /* @__PURE__ */ new Set();
-		}), (r, i) => (_(), s("div", I, [c("table", L, [
-			c("thead", null, [c("tr", R, [t.expandable ? (_(), s("th", ee)) : o("", !0), (_(!0), s(e, null, b(t.columns, (e) => (_(), s("th", {
+		function k(e, t, n) {
+			a.expandable && A(D(e, t)), a.clickable && d("row-click", e, t, n);
+		}
+		function A(e) {
+			let t = new Set(g.value);
+			t.has(e) ? t.delete(e) : t.add(e), g.value = t;
+		}
+		return w(C, (e) => {
+			h.value > e && (h.value = e);
+		}), w(() => a.rows, () => {
+			h.value = 1, g.value = /* @__PURE__ */ new Set();
+		}), (r, i) => (_(), s("div", F, [c("table", I, [
+			c("thead", null, [c("tr", L, [t.expandable ? (_(), s("th", te)) : o("", !0), (_(!0), s(e, null, b(t.columns, (e) => (_(), s("th", {
 				key: e.key,
 				class: p(["px-4 py-3 font-semibold text-surface-600 whitespace-nowrap", { "cursor-pointer select-none hover:text-surface-900": e.sortable }]),
-				onClick: (t) => e.sortable && D(e.key)
-			}, [c("span", B, [l(S(e.label) + " ", 1), e.sortable ? (_(), s("span", V, [a.value === e.key && d.value === "asc" ? (_(), s("svg", H, [...i[2] ||= [c("path", {
+				onClick: (t) => e.sortable && O(e.key)
+			}, [c("span", z, [l(S(e.label) + " ", 1), e.sortable ? (_(), s("span", B, [f.value === e.key && m.value === "asc" ? (_(), s("svg", V, [...i[2] ||= [c("path", {
 				"stroke-linecap": "round",
 				"stroke-linejoin": "round",
 				d: "M5 15l7-7 7 7"
-			}, null, -1)]])) : a.value === e.key && d.value === "desc" ? (_(), s("svg", U, [...i[3] ||= [c("path", {
+			}, null, -1)]])) : f.value === e.key && m.value === "desc" ? (_(), s("svg", H, [...i[3] ||= [c("path", {
 				"stroke-linecap": "round",
 				"stroke-linejoin": "round",
 				d: "M19 9l-7 7-7-7"
-			}, null, -1)]])) : (_(), s("svg", W, [...i[4] ||= [c("path", {
+			}, null, -1)]])) : (_(), s("svg", U, [...i[4] ||= [c("path", {
 				"stroke-linecap": "round",
 				"stroke-linejoin": "round",
 				d: "M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
-			}, null, -1)]]))])) : o("", !0)])], 10, z))), 128))])]),
-			(_(!0), s(e, null, b(v.value, (a, d) => (_(), s(e, { key: d }, [c("tr", {
-				class: p(["border-b border-surface-100 hover:bg-surface-50/50 transition-colors", { "cursor-pointer": t.expandable }]),
-				onClick: (e) => t.expandable && O(w(a, d))
-			}, [t.expandable ? (_(), s("td", K, [(_(), s("svg", {
-				class: p(["w-4 h-4 text-surface-400 transition-transform duration-200", { "rotate-90": m.value.has(w(a, d)) }]),
+			}, null, -1)]]))])) : o("", !0)])], 10, R))), 128))])]),
+			(_(!0), s(e, null, b(ee.value, (a, d) => (_(), s(e, { key: d }, [c("tr", {
+				class: p(["border-b border-surface-100 hover:bg-surface-50/50 transition-colors", { "cursor-pointer": t.expandable || t.clickable }]),
+				onClick: (e) => k(a, d, e)
+			}, [t.expandable ? (_(), s("td", G, [(_(), s("svg", {
+				class: p(["w-4 h-4 text-surface-400 transition-transform duration-200", { "rotate-90": g.value.has(D(a, d)) }]),
 				fill: "none",
 				viewBox: "0 0 24 24",
 				stroke: "currentColor",
@@ -225,24 +233,24 @@ var k = ["disabled"], A = {
 			}, [x(r.$slots, e.key, {
 				row: a,
 				value: a[e.key]
-			}, () => [l(S(a[e.key]), 1)])]))), 128))], 10, G), t.expandable && m.value.has(w(a, d)) ? (_(), s("tr", q, [c("td", {
+			}, () => [l(S(a[e.key]), 1)])]))), 128))], 10, W), t.expandable && g.value.has(D(a, d)) ? (_(), s("tr", K, [c("td", {
 				colspan: t.columns.length + 1,
 				class: "p-0"
 			}, [u(n, { name: "expand" }, {
-				default: E(() => [m.value.has(w(a, d)) ? (_(), s("div", ne, [x(r.$slots, "expanded", {
+				default: T(() => [g.value.has(D(a, d)) ? (_(), s("div", ne, [x(r.$slots, "expanded", {
 					row: a,
 					index: d
 				})])) : o("", !0)]),
 				_: 2
-			}, 1024)], 8, te)])) : o("", !0)], 64))), 128)),
-			r.$slots.footer || g.value > 1 ? (_(), s("tfoot", J, [c("tr", Y, [t.expandable ? (_(), s("td", X)) : o("", !0), c("td", {
+			}, 1024)], 8, q)])) : o("", !0)], 64))), 128)),
+			r.$slots.footer || C.value > 1 ? (_(), s("tfoot", J, [c("tr", Y, [t.expandable ? (_(), s("td", X)) : o("", !0), c("td", {
 				colspan: t.columns.length,
 				class: "px-4 py-3"
-			}, [x(r.$slots, "footer", {}, () => [c("div", ie, [c("span", ae, S((f.value - 1) * t.perPage + 1) + "-" + S(f.value === g.value ? h.value.length : f.value * t.perPage) + " of " + S(h.value.length), 1), c("div", oe, [
+			}, [x(r.$slots, "footer", {}, () => [c("div", ie, [c("span", ae, S((h.value - 1) * t.perPage + 1) + "-" + S(h.value === C.value ? v.value.length : h.value * t.perPage) + " of " + S(v.value.length), 1), c("div", oe, [
 				c("button", {
-					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer", f.value === 1 ? "text-surface-300 cursor-not-allowed" : "text-surface-600 hover:bg-surface-100"]),
-					disabled: f.value === 1,
-					onClick: i[0] ||= (e) => f.value--
+					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer", h.value === 1 ? "text-surface-300 cursor-not-allowed" : "text-surface-600 hover:bg-surface-100"]),
+					disabled: h.value === 1,
+					onClick: i[0] ||= (e) => h.value--
 				}, [...i[6] ||= [c("svg", {
 					class: "w-4 h-4",
 					fill: "none",
@@ -254,15 +262,15 @@ var k = ["disabled"], A = {
 					"stroke-linejoin": "round",
 					d: "M15 19l-7-7 7-7"
 				})], -1)]], 10, se),
-				(_(!0), s(e, null, b(C.value, (t) => (_(), s(e, { key: t }, [t === "..." ? (_(), s("button", ce, "…")) : (_(), s("button", {
+				(_(!0), s(e, null, b(E.value, (t) => (_(), s(e, { key: t }, [t === "..." ? (_(), s("button", ce, "…")) : (_(), s("button", {
 					key: 1,
-					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-medium transition-colors cursor-pointer", t === f.value ? "bg-primary-600 text-white" : "text-surface-600 hover:bg-surface-100"]),
-					onClick: (e) => f.value = t
+					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-medium transition-colors cursor-pointer", t === h.value ? "bg-primary-600 text-white" : "text-surface-600 hover:bg-surface-100"]),
+					onClick: (e) => h.value = t
 				}, S(t), 11, le))], 64))), 128)),
 				c("button", {
-					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer", f.value === g.value ? "text-surface-300 cursor-not-allowed" : "text-surface-600 hover:bg-surface-100"]),
-					disabled: f.value === g.value,
-					onClick: i[1] ||= (e) => f.value++
+					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer", h.value === C.value ? "text-surface-300 cursor-not-allowed" : "text-surface-600 hover:bg-surface-100"]),
+					disabled: h.value === C.value,
+					onClick: i[1] ||= (e) => h.value++
 				}, [...i[7] ||= [c("svg", {
 					class: "w-4 h-4",
 					fill: "none",
@@ -349,7 +357,7 @@ var he = { class: "mt-0.5 shrink-0" }, ge = { class: "flex-1 min-w-0" }, _e = {
 			name: "toast",
 			class: "fixed top-4 right-4 z-[9999] flex flex-col gap-3 pointer-events-none"
 		}, {
-			default: E(() => [(_(!0), s(e, null, b(C(Z), (e) => (_(), s("div", {
+			default: T(() => [(_(!0), s(e, null, b(C(Z), (e) => (_(), s("div", {
 				key: e.id,
 				class: p([l(e.type), "pointer-events-auto min-w-[320px] max-w-md rounded-xl shadow-lg border backdrop-blur-sm p-4 flex items-start gap-3"])
 			}, [
@@ -603,12 +611,12 @@ var he = { class: "mt-0.5 shrink-0" }, ge = { class: "flex-1 min-w-0" }, _e = {
 			e.key === "Escape" && i.modelValue && i.closable && f();
 		}
 		return h(() => document.addEventListener("keydown", v)), g(() => document.removeEventListener("keydown", v)), (r, i) => (_(), a(t, { to: "body" }, [u(n, { name: "modal-overlay" }, {
-			default: E(() => [e.modelValue ? (_(), s("div", {
+			default: T(() => [e.modelValue ? (_(), s("div", {
 				key: 0,
 				class: p(["fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4", e.overlayClass]),
-				onClick: O(m, ["self"])
+				onClick: D(m, ["self"])
 			}, [u(n, { name: "modal-content" }, {
-				default: E(() => [e.modelValue ? (_(), s("div", {
+				default: T(() => [e.modelValue ? (_(), s("div", {
 					key: 0,
 					class: p([[d[e.size], e.contentClass], "bg-white rounded-2xl shadow-2xl w-full flex flex-col overflow-hidden animate-in"])
 				}, [
@@ -759,7 +767,7 @@ var he = { class: "mt-0.5 shrink-0" }, ge = { class: "flex-1 min-w-0" }, _e = {
 			"stroke-linejoin": "round",
 			d: "M19 9l-7 7-7-7"
 		})], -1)])])]), u(n, { name: "dropdown" }, {
-			default: E(() => [r.value ? (_(), s("div", {
+			default: T(() => [r.value ? (_(), s("div", {
 				key: 0,
 				class: p(["absolute z-50 mt-1 bg-white border border-surface-200 rounded-xl shadow-lg py-1 min-w-[180px]", [a[e.placement], C(d)]])
 			}, [x(t.$slots, "default")], 2)) : o("", !0)]),
@@ -909,91 +917,91 @@ var he = { class: "mt-0.5 shrink-0" }, ge = { class: "flex-1 min-w-0" }, _e = {
 	},
 	emits: ["update:modelValue", "search"],
 	setup(r, { emit: d }) {
-		let v = r, C = d, k = y(!1), A = y(""), j = y(-1), M = y(null), N = y(null), P = y(null), F = y(null), I = y(null), L = y({}), R = i(() => v.modelValue !== null && v.modelValue !== void 0 && v.modelValue !== ""), ee = i(() => {
-			if (!R.value) return "";
-			let e = v.options.find((e) => V(e) === v.modelValue);
-			return e ? B(e) : "";
-		}), z = i(() => {
-			if (!A.value) return v.options;
-			let e = A.value.toLowerCase();
-			return v.options.filter((t) => B(t).toLowerCase().includes(e));
+		let v = r, C = d, O = y(!1), k = y(""), A = y(-1), j = y(null), M = y(null), N = y(null), P = y(null), F = y(null), I = y({}), L = i(() => v.modelValue !== null && v.modelValue !== void 0 && v.modelValue !== ""), te = i(() => {
+			if (!L.value) return "";
+			let e = v.options.find((e) => B(e) === v.modelValue);
+			return e ? z(e) : "";
+		}), R = i(() => {
+			if (!k.value) return v.options;
+			let e = k.value.toLowerCase();
+			return v.options.filter((t) => z(t).toLowerCase().includes(e));
 		});
-		function B(e) {
+		function z(e) {
 			return typeof e == "object" ? e[v.labelKey] : e;
 		}
-		function V(e) {
+		function B(e) {
 			return typeof e == "object" ? e[v.valueKey] : e;
 		}
-		function H(e) {
-			return V(e) === v.modelValue;
+		function V(e) {
+			return B(e) === v.modelValue;
 		}
-		let U = i(() => [
+		let H = i(() => [
 			"inline-flex items-center gap-2 w-full px-4 py-2 text-sm font-medium bg-white border rounded-lg transition-colors",
 			"hover:bg-surface-50",
-			k.value ? "border-primary-500 ring-2 ring-primary-500/30" : "border-surface-300",
+			O.value ? "border-primary-500 ring-2 ring-primary-500/30" : "border-surface-300",
 			v.disabled ? "bg-surface-50 cursor-not-allowed opacity-50" : "cursor-pointer",
 			v.error ? "border-danger" : ""
 		]);
-		function W(e) {
+		function U(e) {
 			return [
 				"flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors",
-				e === j.value ? "bg-primary-50 text-primary-700" : "text-surface-700 hover:bg-surface-50",
+				e === A.value ? "bg-primary-50 text-primary-700" : "text-surface-700 hover:bg-surface-50",
 				"font-medium"
 			];
 		}
-		function G() {
-			if (!P.value) return;
-			let e = P.value.getBoundingClientRect();
-			L.value = {
+		function W() {
+			if (!N.value) return;
+			let e = N.value.getBoundingClientRect();
+			I.value = {
 				top: `${e.bottom + 4}px`,
 				left: `${e.left}px`,
 				width: `${e.width}px`
 			};
 		}
-		function K() {
-			v.disabled || (k.value = !k.value, k.value && f(() => {
-				G(), M.value?.focus();
+		function G() {
+			v.disabled || (O.value = !O.value, O.value && f(() => {
+				W(), j.value?.focus();
 			}));
 		}
-		function q(e) {
-			C("update:modelValue", V(e)), k.value = !1, A.value = "", j.value = -1;
+		function K(e) {
+			C("update:modelValue", B(e)), O.value = !1, k.value = "", A.value = -1;
 		}
-		function te() {
+		function q() {
 			C("update:modelValue", null);
 		}
 		function ne(e) {
-			if (k.value) switch (e.key) {
+			if (O.value) switch (e.key) {
 				case "ArrowDown":
-					e.preventDefault(), j.value = Math.min(j.value + 1, z.value.length - 1), J();
+					e.preventDefault(), A.value = Math.min(A.value + 1, R.value.length - 1), J();
 					break;
 				case "ArrowUp":
-					e.preventDefault(), j.value = Math.max(j.value - 1, 0), J();
+					e.preventDefault(), A.value = Math.max(A.value - 1, 0), J();
 					break;
 				case "Enter":
-					e.preventDefault(), j.value >= 0 && j.value < z.value.length && q(z.value[j.value]);
+					e.preventDefault(), A.value >= 0 && A.value < R.value.length && K(R.value[A.value]);
 					break;
 				case "Escape":
-					k.value = !1, A.value = "", j.value = -1;
+					O.value = !1, k.value = "", A.value = -1;
 					break;
 			}
 		}
 		function J() {
 			f(() => {
-				let e = I.value?.children;
-				e && e[j.value] && e[j.value].scrollIntoView({ block: "nearest" });
+				let e = F.value?.children;
+				e && e[A.value] && e[A.value].scrollIntoView({ block: "nearest" });
 			});
 		}
-		T(k, (e) => {
-			e || (A.value = "", j.value = -1);
-		}), T(A, (e) => {
-			C("search", e), j.value = -1;
+		w(O, (e) => {
+			e || (k.value = "", A.value = -1);
+		}), w(k, (e) => {
+			C("search", e), A.value = -1;
 		});
 		function Y(e) {
 			let t = e.target;
-			N.value?.contains(t) || F.value?.contains(t) || M.value !== t && (k.value = !1);
+			M.value?.contains(t) || P.value?.contains(t) || j.value !== t && (O.value = !1);
 		}
 		function X() {
-			k.value && G();
+			O.value && W();
 		}
 		return h(() => {
 			document.addEventListener("click", Y, !0), window.addEventListener("scroll", X, !0), window.addEventListener("resize", X);
@@ -1002,19 +1010,19 @@ var he = { class: "mt-0.5 shrink-0" }, ge = { class: "flex-1 min-w-0" }, _e = {
 		}), (i, d) => (_(), s("div", {
 			class: "relative",
 			ref_key: "containerRef",
-			ref: N
+			ref: M
 		}, [
 			r.label ? (_(), s("label", Xe, [l(S(r.label) + " ", 1), r.required ? (_(), s("span", Ze, "*")) : o("", !0)])) : o("", !0),
 			c("button", {
 				ref_key: "triggerRef",
-				ref: P,
-				class: p(U.value),
+				ref: N,
+				class: p(H.value),
 				disabled: r.disabled,
-				onClick: K
-			}, [c("span", { class: p(["flex-1 truncate text-left", R.value ? "text-surface-800" : "text-surface-400"]) }, S(R.value ? ee.value : r.placeholder), 3), c("div", $e, [r.clearable && R.value ? (_(), s("button", {
+				onClick: G
+			}, [c("span", { class: p(["flex-1 truncate text-left", L.value ? "text-surface-800" : "text-surface-400"]) }, S(L.value ? te.value : r.placeholder), 3), c("div", $e, [r.clearable && L.value ? (_(), s("button", {
 				key: 0,
 				class: "p-0.5 rounded cursor-pointer text-surface-400 hover:text-surface-600 hover:bg-surface-100 transition-colors",
-				onClick: O(te, ["stop"])
+				onClick: D(q, ["stop"])
 			}, [...d[1] ||= [c("svg", {
 				class: "w-3.5 h-3.5",
 				fill: "none",
@@ -1026,7 +1034,7 @@ var he = { class: "mt-0.5 shrink-0" }, ge = { class: "flex-1 min-w-0" }, _e = {
 				"stroke-linejoin": "round",
 				d: "M6 18L18 6M6 6l12 12"
 			})], -1)]])) : o("", !0), (_(), s("svg", {
-				class: p(["w-4 h-4 text-surface-500 transition-transform duration-150", { "rotate-180": k.value }]),
+				class: p(["w-4 h-4 text-surface-500 transition-transform duration-150", { "rotate-180": O.value }]),
 				fill: "none",
 				viewBox: "0 0 24 24",
 				stroke: "currentColor",
@@ -1038,15 +1046,15 @@ var he = { class: "mt-0.5 shrink-0" }, ge = { class: "flex-1 min-w-0" }, _e = {
 			}, null, -1)]], 2))])], 10, Qe),
 			(_(), a(t, { to: "body" }, [u(n, {
 				name: "searchable-dropdown",
-				onBeforeEnter: G,
-				onEnter: G
+				onBeforeEnter: W,
+				onEnter: W
 			}, {
-				default: E(() => [k.value ? (_(), s("div", {
+				default: T(() => [O.value ? (_(), s("div", {
 					key: 0,
 					ref_key: "dropdownRef",
-					ref: F,
+					ref: P,
 					class: "fixed z-[9999] bg-white border border-surface-200 rounded-xl shadow-lg overflow-hidden",
-					style: m(L.value)
+					style: m(I.value)
 				}, [
 					c("div", et, [c("div", tt, [d[3] ||= c("svg", {
 						class: "w-4 h-4 text-surface-400 shrink-0",
@@ -1058,28 +1066,28 @@ var he = { class: "mt-0.5 shrink-0" }, ge = { class: "flex-1 min-w-0" }, _e = {
 						"stroke-linecap": "round",
 						"stroke-linejoin": "round",
 						d: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-					})], -1), D(c("input", {
+					})], -1), E(c("input", {
 						ref_key: "inputRef",
-						ref: M,
-						"onUpdate:modelValue": d[0] ||= (e) => A.value = e,
+						ref: j,
+						"onUpdate:modelValue": d[0] ||= (e) => k.value = e,
 						class: "w-full bg-transparent outline-none text-sm placeholder:text-surface-400",
 						placeholder: r.searchPlaceholder,
 						onKeydown: ne
-					}, null, 40, nt), [[w, A.value]])])]),
-					z.value.length === 0 ? (_(), s("div", rt, S(r.emptyText), 1)) : o("", !0),
+					}, null, 40, nt), [[ee, k.value]])])]),
+					R.value.length === 0 ? (_(), s("div", rt, S(r.emptyText), 1)) : o("", !0),
 					c("ul", {
 						class: "max-h-60 overflow-y-auto py-1",
 						ref_key: "listRef",
-						ref: I
-					}, [(_(!0), s(e, null, b(z.value, (e, t) => (_(), s("li", {
-						key: V(e),
-						class: p(W(t)),
-						onClick: (t) => q(e),
-						onMouseenter: (e) => j.value = t
+						ref: F
+					}, [(_(!0), s(e, null, b(R.value, (e, t) => (_(), s("li", {
+						key: B(e),
+						class: p(U(t)),
+						onClick: (t) => K(e),
+						onMouseenter: (e) => A.value = t
 					}, [x(i.$slots, "option", {
 						option: e,
-						selected: H(e)
-					}, () => [c("span", at, S(B(e)), 1), H(e) ? (_(), s("svg", ot, [...d[4] ||= [c("path", {
+						selected: V(e)
+					}, () => [c("span", at, S(z(e)), 1), V(e) ? (_(), s("svg", ot, [...d[4] ||= [c("path", {
 						"stroke-linecap": "round",
 						"stroke-linejoin": "round",
 						d: "M5 13l4 4L19 7"
@@ -1091,8 +1099,8 @@ var he = { class: "mt-0.5 shrink-0" }, ge = { class: "flex-1 min-w-0" }, _e = {
 		], 512));
 	}
 }, lt = {
-	Button: j,
-	Card: F,
+	Button: A,
+	Card: P,
 	Table: de,
 	Toast: be,
 	Badge: Se,
@@ -1107,4 +1115,4 @@ var he = { class: "mt-0.5 shrink-0" }, ge = { class: "flex-1 min-w-0" }, _e = {
 	for (let [t, n] of Object.entries(lt)) e.component(t, n);
 } };
 //#endregion
-export { ze as Alert, Se as Badge, j as Button, F as Card, Ve as Dropdown, We as DropdownItem, Me as Input, Pe as Modal, ct as SearchableDropdown, de as Table, Ye as Tabs, be as Toast, ut as default, me as useToast };
+export { ze as Alert, Se as Badge, A as Button, P as Card, Ve as Dropdown, We as DropdownItem, Me as Input, Pe as Modal, ct as SearchableDropdown, de as Table, Ye as Tabs, be as Toast, ut as default, me as useToast };

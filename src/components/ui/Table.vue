@@ -25,8 +25,8 @@
       <template v-for="(row, i) in paginatedRows" :key="i">
         <tr
           class="border-b border-surface-100 hover:bg-surface-50/50 transition-colors"
-          :class="{ 'cursor-pointer': expandable }"
-          @click="expandable && toggleExpand(rowId(row, i))"
+          :class="{ 'cursor-pointer': expandable || clickable }"
+          @click="handleRowClick(row, i, $event)"
         >
           <td v-if="expandable" class="w-10 px-4 py-3">
             <svg
@@ -107,7 +107,10 @@ const props = defineProps({
   rows: { type: Array, default: () => [] },
   expandable: { type: Boolean, default: false },
   perPage: { type: Number, default: 10 },
+  clickable: { type: Boolean, default: false },
 })
+
+const emit = defineEmits(['row-click'])
 
 const sortKey = ref(null)
 const sortOrder = ref('asc')
@@ -158,6 +161,11 @@ function toggleSort(key) {
     sortKey.value = key
     sortOrder.value = 'asc'
   }
+}
+
+function handleRowClick(row, index, event) {
+  if (props.expandable) toggleExpand(rowId(row, index))
+  if (props.clickable) emit('row-click', row, index, event)
 }
 
 function toggleExpand(id) {

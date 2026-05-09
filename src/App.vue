@@ -43,6 +43,12 @@ const countries = [
 ]
 
 const roles = ['Engineer', 'Designer', 'Product Manager', 'Data Analyst', 'DevOps', 'QA Engineer']
+
+const onRowClick = (row) => {
+  console.log('--row', row);
+  
+  toast.info(`Clicked: ${row.name}`, { title: 'Row Clicked' })
+}
 </script>
 
 <template>
@@ -148,8 +154,8 @@ const roles = ['Engineer', 'Designer', 'Product Manager', 'Data Analyst', 'DevOp
     <section class="space-y-3">
       <h2 class="text-xl font-semibold text-surface-800">Table</h2>
       <Card variant="bordered" class="p-0">
-        <template #header><span class="font-semibold">Team Members</span></template>
-        <Table :columns="tableColumns" :rows="tableRows" expandable :per-page="3">
+        <template #header><span class="font-semibold">Team Members (clickable rows)</span></template>
+        <Table :columns="tableColumns" :rows="tableRows" expandable :per-page="3" clickable @row-click="onRowClick">
           <template #status="{ value }">
             <Badge :variant="value === 'Active' ? 'success' : value === 'On Leave' ? 'warning' : 'default'" size="sm">
               {{ value }}
