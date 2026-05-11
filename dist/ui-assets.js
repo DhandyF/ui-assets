@@ -181,6 +181,10 @@ var k = ["disabled"], A = {
 		sortOrder: {
 			type: String,
 			default: "asc"
+		},
+		pagination: {
+			type: Object,
+			default: null
 		}
 	},
 	emits: [
@@ -189,26 +193,39 @@ var k = ["disabled"], A = {
 		"sort-change"
 	],
 	setup(t, { emit: r }) {
-		let a = t, d = r, f = y(/* @__PURE__ */ new Set()), m = y(1), h = y(null), g = y("asc"), v = i(() => a.serverSide ? a.currentPage : m.value), C = i(() => a.serverSide ? a.sortKey : h.value), w = i(() => a.serverSide ? a.sortOrder : g.value), D = i(() => a.serverSide ? a.total : O.value.length), O = i(() => a.serverSide || !h.value ? a.rows : [...a.rows].sort((e, t) => {
+		let a = t, d = r, f = y(/* @__PURE__ */ new Set()), m = y(1), h = y(null), g = y("asc"), v = i(() => {
+			if (a.pagination) {
+				let e = a.pagination;
+				return {
+					currentPage: e.current_page ?? e.currentPage ?? 1,
+					total: e.total ?? 0,
+					perPage: e.per_page ?? e.perPage ?? a.perPage,
+					lastPage: e.last_page ?? e.lastPage ?? e.totalPages ?? 1,
+					from: e.from ?? 0,
+					to: e.to ?? 0
+				};
+			}
+			return null;
+		}), C = i(() => a.serverSide || !!a.pagination), w = i(() => v.value?.perPage ?? a.perPage), D = i(() => v.value ? v.value.currentPage : C.value ? a.currentPage : m.value), O = i(() => C.value ? a.sortKey : h.value), k = i(() => C.value ? a.sortOrder : g.value), A = i(() => v.value?.total ?? (C.value ? a.total : j.value.length)), j = i(() => C.value || !h.value ? a.rows : [...a.rows].sort((e, t) => {
 			let n = e[h.value], r = t[h.value], i = n < r ? -1 : +(n > r);
 			return g.value === "asc" ? i : -i;
-		})), k = i(() => Math.max(1, Math.ceil(D.value / a.perPage))), A = i(() => {
-			if (a.serverSide) return a.rows;
-			let e = (m.value - 1) * a.perPage;
-			return O.value.slice(e, e + a.perPage);
-		}), j = i(() => D.value === 0 ? 0 : (v.value - 1) * a.perPage + 1), M = i(() => Math.min(v.value * a.perPage, D.value)), N = i(() => {
-			let e = k.value, t = v.value;
+		})), M = i(() => v.value?.lastPage ?? Math.max(1, Math.ceil(A.value / w.value))), N = i(() => {
+			if (C.value) return a.rows;
+			let e = (m.value - 1) * w.value;
+			return j.value.slice(e, e + w.value);
+		}), P = i(() => v.value ? v.value.from || 0 : A.value === 0 ? 0 : (D.value - 1) * w.value + 1), F = i(() => v.value ? v.value.to || 0 : Math.min(D.value * w.value, A.value)), X = i(() => {
+			let e = M.value, t = D.value;
 			if (e <= 7) return Array.from({ length: e }, (e, t) => t + 1);
 			let n = [];
 			n.push(1), t > 3 && n.push("...");
 			for (let r = Math.max(2, t - 1); r <= Math.min(e - 1, t + 1); r++) n.push(r);
 			return t < e - 2 && n.push("..."), n.push(e), n;
 		});
-		function P(e, t) {
-			return e.id ?? t + (v.value - 1) * a.perPage;
+		function Z(e, t) {
+			return e.id ?? t + (D.value - 1) * w.value;
 		}
-		function F(e) {
-			if (a.serverSide) {
+		function fe(e) {
+			if (C.value) {
 				let t = "asc";
 				a.sortKey === e && (t = a.sortOrder === "asc" ? "desc" : "asc"), d("sort-change", {
 					key: e,
@@ -216,30 +233,30 @@ var k = ["disabled"], A = {
 				});
 			} else h.value === e ? g.value = g.value === "asc" ? "desc" : "asc" : (h.value = e, g.value = "asc");
 		}
-		function X(e) {
-			e < 1 || e > k.value || (a.serverSide ? d("page-change", e) : m.value = e);
+		function Q(e) {
+			e < 1 || e > M.value || (C.value ? d("page-change", e) : m.value = e);
 		}
-		function Z(e, t, n) {
-			a.expandable && fe(P(e, t)), a.clickable && d("row-click", e, t, n);
+		function $(e, t, n) {
+			a.expandable && pe(Z(e, t)), a.clickable && d("row-click", e, t, n);
 		}
-		function fe(e) {
+		function pe(e) {
 			let t = new Set(f.value);
 			t.has(e) ? t.delete(e) : t.add(e), f.value = t;
 		}
-		return T(k, (e) => {
-			m.value > e && (m.value = e);
+		return T(M, (e) => {
+			!C.value && m.value > e && (m.value = e);
 		}), T(() => a.rows, () => {
 			m.value = 1, f.value = /* @__PURE__ */ new Set();
 		}), (r, i) => (_(), s("div", I, [c("table", L, [
 			c("thead", null, [c("tr", R, [t.expandable ? (_(), s("th", ee)) : o("", !0), (_(!0), s(e, null, b(t.columns, (e) => (_(), s("th", {
 				key: e.key,
 				class: p(["px-4 py-3 font-semibold text-surface-600 whitespace-nowrap", { "cursor-pointer select-none hover:text-surface-900": e.sortable }]),
-				onClick: (t) => e.sortable && F(e.key)
-			}, [c("span", B, [l(S(e.label) + " ", 1), e.sortable ? (_(), s("span", V, [C.value === e.key && w.value === "asc" ? (_(), s("svg", H, [...i[2] ||= [c("path", {
+				onClick: (t) => e.sortable && fe(e.key)
+			}, [c("span", B, [l(S(e.label) + " ", 1), e.sortable ? (_(), s("span", V, [O.value === e.key && k.value === "asc" ? (_(), s("svg", H, [...i[2] ||= [c("path", {
 				"stroke-linecap": "round",
 				"stroke-linejoin": "round",
 				d: "M5 15l7-7 7 7"
-			}, null, -1)]])) : C.value === e.key && w.value === "desc" ? (_(), s("svg", U, [...i[3] ||= [c("path", {
+			}, null, -1)]])) : O.value === e.key && k.value === "desc" ? (_(), s("svg", U, [...i[3] ||= [c("path", {
 				"stroke-linecap": "round",
 				"stroke-linejoin": "round",
 				d: "M19 9l-7 7-7-7"
@@ -248,11 +265,11 @@ var k = ["disabled"], A = {
 				"stroke-linejoin": "round",
 				d: "M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
 			}, null, -1)]]))])) : o("", !0)])], 10, z))), 128))])]),
-			(_(!0), s(e, null, b(A.value, (a, d) => (_(), s(e, { key: d }, [c("tr", {
+			(_(!0), s(e, null, b(N.value, (a, d) => (_(), s(e, { key: d }, [c("tr", {
 				class: p(["border-b border-surface-100 hover:bg-surface-50/50 transition-colors", { "cursor-pointer": t.expandable || t.clickable }]),
-				onClick: (e) => Z(a, d, e)
+				onClick: (e) => $(a, d, e)
 			}, [t.expandable ? (_(), s("td", te, [(_(), s("svg", {
-				class: p(["w-4 h-4 text-surface-400 transition-transform duration-200", { "rotate-90": f.value.has(P(a, d)) }]),
+				class: p(["w-4 h-4 text-surface-400 transition-transform duration-200", { "rotate-90": f.value.has(Z(a, d)) }]),
 				fill: "none",
 				viewBox: "0 0 24 24",
 				stroke: "currentColor",
@@ -267,28 +284,28 @@ var k = ["disabled"], A = {
 			}, [x(r.$slots, e.key, {
 				row: a,
 				value: a[e.key]
-			}, () => [l(S(a[e.key]), 1)])]))), 128))], 10, G), t.expandable && f.value.has(P(a, d)) ? (_(), s("tr", K, [c("td", {
+			}, () => [l(S(a[e.key]), 1)])]))), 128))], 10, G), t.expandable && f.value.has(Z(a, d)) ? (_(), s("tr", K, [c("td", {
 				colspan: t.columns.length + 1,
 				class: "p-0"
 			}, [u(n, { name: "expand" }, {
-				default: E(() => [f.value.has(P(a, d)) ? (_(), s("div", re, [x(r.$slots, "expanded", {
+				default: E(() => [f.value.has(Z(a, d)) ? (_(), s("div", re, [x(r.$slots, "expanded", {
 					row: a,
 					index: d
 				})])) : o("", !0)]),
 				_: 2
 			}, 1024)], 8, ne)])) : o("", !0)], 64))), 128)),
-			r.$slots.footer || k.value > 1 ? (_(), s("tfoot", q, [c("tr", J, [t.expandable ? (_(), s("td", Y)) : o("", !0), c("td", {
+			r.$slots.footer || M.value > 1 ? (_(), s("tfoot", q, [c("tr", J, [t.expandable ? (_(), s("td", Y)) : o("", !0), c("td", {
 				colspan: t.columns.length,
 				class: "px-4 py-3"
 			}, [x(r.$slots, "footer", {
-				totalPages: k.value,
-				currentPage: v.value,
-				totalItems: D.value
-			}, () => [c("div", ae, [c("span", oe, S(j.value) + "-" + S(M.value) + " of " + S(D.value), 1), c("div", se, [
+				totalPages: M.value,
+				currentPage: D.value,
+				totalItems: A.value
+			}, () => [c("div", ae, [c("span", oe, S(P.value) + "-" + S(F.value) + " of " + S(A.value), 1), c("div", se, [
 				c("button", {
-					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer", v.value === 1 ? "text-surface-300 cursor-not-allowed" : "text-surface-600 hover:bg-surface-100"]),
-					disabled: v.value === 1,
-					onClick: i[0] ||= (e) => X(v.value - 1)
+					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer", D.value === 1 ? "text-surface-300 cursor-not-allowed" : "text-surface-600 hover:bg-surface-100"]),
+					disabled: D.value === 1,
+					onClick: i[0] ||= (e) => Q(D.value - 1)
 				}, [...i[6] ||= [c("svg", {
 					class: "w-4 h-4",
 					fill: "none",
@@ -300,15 +317,15 @@ var k = ["disabled"], A = {
 					"stroke-linejoin": "round",
 					d: "M15 19l-7-7 7-7"
 				})], -1)]], 10, ce),
-				(_(!0), s(e, null, b(N.value, (t) => (_(), s(e, { key: t }, [t === "..." ? (_(), s("button", le, "…")) : (_(), s("button", {
+				(_(!0), s(e, null, b(X.value, (t) => (_(), s(e, { key: t }, [t === "..." ? (_(), s("button", le, "…")) : (_(), s("button", {
 					key: 1,
-					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-medium transition-colors cursor-pointer", t === v.value ? "bg-primary-600 text-white" : "text-surface-600 hover:bg-surface-100"]),
-					onClick: (e) => X(t)
+					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-medium transition-colors cursor-pointer", t === D.value ? "bg-primary-600 text-white" : "text-surface-600 hover:bg-surface-100"]),
+					onClick: (e) => Q(t)
 				}, S(t), 11, ue))], 64))), 128)),
 				c("button", {
-					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer", v.value === k.value ? "text-surface-300 cursor-not-allowed" : "text-surface-600 hover:bg-surface-100"]),
-					disabled: v.value === k.value,
-					onClick: i[1] ||= (e) => X(v.value + 1)
+					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer", D.value === M.value ? "text-surface-300 cursor-not-allowed" : "text-surface-600 hover:bg-surface-100"]),
+					disabled: D.value === M.value,
+					onClick: i[1] ||= (e) => Q(D.value + 1)
 				}, [...i[7] ||= [c("svg", {
 					class: "w-4 h-4",
 					fill: "none",

@@ -113,6 +113,7 @@ const props = defineProps({
   currentPage: { type: Number, default: 1 },
   sortKey: { type: String, default: null },
   sortOrder: { type: String, default: 'asc' },
+  pagination: { type: Object, default: null },
 })
 
 const emit = defineEmits(['row-click', 'page-change', 'sort-change'])
@@ -122,14 +123,36 @@ const internalPage = ref(1)
 const internalSortKey = ref(null)
 const internalSortOrder = ref('asc')
 
-const currentPageLocal = computed(() => props.serverSide ? props.currentPage : internalPage.value)
-const sortKey = computed(() => props.serverSide ? props.sortKey : internalSortKey.value)
-const sortOrder = computed(() => props.serverSide ? props.sortOrder : internalSortOrder.value)
+const paginationMeta = computed(() => {
+  if (props.pagination) {
+    const p = props.pagination
+    return {
+      currentPage: p.current_page ?? p.currentPage ?? 1,
+      total: p.total ?? 0,
+      perPage: p.per_page ?? p.perPage ?? props.perPage,
+      lastPage: p.last_page ?? p.lastPage ?? p.totalPages ?? 1,
+      from: p.from ?? 0,
+      to: p.to ?? 0,
+    }
+  }
+  return null
+})
 
-const totalItems = computed(() => props.serverSide ? props.total : sortedRows.value.length)
+const isServerSide = computed(() => props.serverSide || !!props.pagination)
+
+const resolvedPerPage = computed(() => paginationMeta.value?.perPage ?? props.perPage)
+
+const currentPageLocal = computed(() => {
+  if (paginationMeta.value) return paginationMeta.value.currentPage
+  return isServerSide.value ? props.currentPage : internalPage.value
+})
+const sortKey = computed(() => isServerSide.value ? props.sortKey : internalSortKey.value)
+const sortOrder = computed(() => isServerSide.value ? props.sortOrder : internalSortOrder.value)
+
+const totalItems = computed(() => paginationMeta.value?.total ?? (isServerSide.value ? props.total : sortedRows.value.length))
 
 const sortedRows = computed(() => {
-  if (props.serverSide) return props.rows
+  if (isServerSide.value) return props.rows
   if (!internalSortKey.value) return props.rows
   return [...props.rows].sort((a, b) => {
     const aVal = a[internalSortKey.value]
@@ -139,16 +162,22 @@ const sortedRows = computed(() => {
   })
 })
 
-const totalPages = computed(() => Math.max(1, Math.ceil(totalItems.value / props.perPage)))
+const totalPages = computed(() => paginationMeta.value?.lastPage ?? Math.max(1, Math.ceil(totalItems.value / resolvedPerPage.value)))
 
 const displayRows = computed(() => {
-  if (props.serverSide) return props.rows
-  const start = (internalPage.value - 1) * props.perPage
-  return sortedRows.value.slice(start, start + props.perPage)
+  if (isServerSide.value) return props.rows
+  const start = (internalPage.value - 1) * resolvedPerPage.value
+  return sortedRows.value.slice(start, start + resolvedPerPage.value)
 })
 
-const rangeStart = computed(() => totalItems.value === 0 ? 0 : (currentPageLocal.value - 1) * props.perPage + 1)
-const rangeEnd = computed(() => Math.min(currentPageLocal.value * props.perPage, totalItems.value))
+const rangeStart = computed(() => {
+  if (paginationMeta.value) return paginationMeta.value.from || 0
+  return totalItems.value === 0 ? 0 : (currentPageLocal.value - 1) * resolvedPerPage.value + 1
+})
+const rangeEnd = computed(() => {
+  if (paginationMeta.value) return paginationMeta.value.to || 0
+  return Math.min(currentPageLocal.value * resolvedPerPage.value, totalItems.value)
+})
 
 const visiblePages = computed(() => {
   const total = totalPages.value
@@ -167,11 +196,11 @@ const visiblePages = computed(() => {
 })
 
 function rowId(row, index) {
-  return row.id ?? index + (currentPageLocal.value - 1) * props.perPage
+  return row.id ?? index + (currentPageLocal.value - 1) * resolvedPerPage.value
 }
 
 function toggleSort(key) {
-  if (props.serverSide) {
+  if (isServerSide.value) {
     let newOrder = 'asc'
     if (props.sortKey === key) {
       newOrder = props.sortOrder === 'asc' ? 'desc' : 'asc'
@@ -189,7 +218,7 @@ function toggleSort(key) {
 
 function goToPage(page) {
   if (page < 1 || page > totalPages.value) return
-  if (props.serverSide) {
+  if (isServerSide.value) {
     emit('page-change', page)
   } else {
     internalPage.value = page
@@ -212,7 +241,7 @@ function toggleExpand(id) {
 }
 
 watch(totalPages, (total) => {
-  if (internalPage.value > total) internalPage.value = total
+  if (!isServerSide.value && internalPage.value > total) internalPage.value = total
 })
 
 watch(() => props.rows, () => {
