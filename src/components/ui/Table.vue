@@ -22,7 +22,7 @@
           </th>
         </tr>
       </thead>
-      <template v-for="(row, i) in paginatedRows" :key="i">
+      <template v-for="(row, i) in displayRows" :key="i">
         <tr
           class="border-b border-surface-100 hover:bg-surface-50/50 transition-colors"
           :class="{ 'cursor-pointer': expandable || clickable }"
@@ -55,17 +55,17 @@
         <tr class="bg-surface-50">
           <td v-if="expandable" class="px-4 py-3"></td>
           <td :colspan="columns.length" class="px-4 py-3">
-            <slot name="footer">
+            <slot :total-pages="totalPages" :current-page="currentPageLocal" :total-items="totalItems" name="footer">
               <div class="flex items-center justify-between">
                 <span class="text-sm text-surface-500">
-                  {{ (currentPage - 1) * perPage + 1 }}-{{ currentPage === totalPages ? sortedRows.length : currentPage * perPage }} of {{ sortedRows.length }}
+                  {{ rangeStart }}-{{ rangeEnd }} of {{ totalItems }}
                 </span>
                 <div class="flex items-center gap-1">
                   <button
                     class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer"
-                    :class="currentPage === 1 ? 'text-surface-300 cursor-not-allowed' : 'text-surface-600 hover:bg-surface-100'"
-                    :disabled="currentPage === 1"
-                    @click="currentPage--"
+                    :class="currentPageLocal === 1 ? 'text-surface-300 cursor-not-allowed' : 'text-surface-600 hover:bg-surface-100'"
+                    :disabled="currentPageLocal === 1"
+                    @click="goToPage(currentPageLocal - 1)"
                   >
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
                   </button>
@@ -77,15 +77,15 @@
                     <button
                       v-else
                       class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-medium transition-colors cursor-pointer"
-                      :class="page === currentPage ? 'bg-primary-600 text-white' : 'text-surface-600 hover:bg-surface-100'"
-                      @click="currentPage = page"
+                      :class="page === currentPageLocal ? 'bg-primary-600 text-white' : 'text-surface-600 hover:bg-surface-100'"
+                      @click="goToPage(page)"
                     >{{ page }}</button>
                   </template>
                   <button
                     class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer"
-                    :class="currentPage === totalPages ? 'text-surface-300 cursor-not-allowed' : 'text-surface-600 hover:bg-surface-100'"
-                    :disabled="currentPage === totalPages"
-                    @click="currentPage++"
+                    :class="currentPageLocal === totalPages ? 'text-surface-300 cursor-not-allowed' : 'text-surface-600 hover:bg-surface-100'"
+                    :disabled="currentPageLocal === totalPages"
+                    @click="goToPage(currentPageLocal + 1)"
                   >
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                   </button>
@@ -108,35 +108,51 @@ const props = defineProps({
   expandable: { type: Boolean, default: false },
   perPage: { type: Number, default: 10 },
   clickable: { type: Boolean, default: false },
+  serverSide: { type: Boolean, default: false },
+  total: { type: Number, default: 0 },
+  currentPage: { type: Number, default: 1 },
+  sortKey: { type: String, default: null },
+  sortOrder: { type: String, default: 'asc' },
 })
 
-const emit = defineEmits(['row-click'])
+const emit = defineEmits(['row-click', 'page-change', 'sort-change'])
 
-const sortKey = ref(null)
-const sortOrder = ref('asc')
-const currentPage = ref(1)
 const expandedRows = ref(new Set())
+const internalPage = ref(1)
+const internalSortKey = ref(null)
+const internalSortOrder = ref('asc')
+
+const currentPageLocal = computed(() => props.serverSide ? props.currentPage : internalPage.value)
+const sortKey = computed(() => props.serverSide ? props.sortKey : internalSortKey.value)
+const sortOrder = computed(() => props.serverSide ? props.sortOrder : internalSortOrder.value)
+
+const totalItems = computed(() => props.serverSide ? props.total : sortedRows.value.length)
 
 const sortedRows = computed(() => {
-  if (!sortKey.value) return props.rows
+  if (props.serverSide) return props.rows
+  if (!internalSortKey.value) return props.rows
   return [...props.rows].sort((a, b) => {
-    const aVal = a[sortKey.value]
-    const bVal = b[sortKey.value]
+    const aVal = a[internalSortKey.value]
+    const bVal = b[internalSortKey.value]
     const result = aVal < bVal ? -1 : aVal > bVal ? 1 : 0
-    return sortOrder.value === 'asc' ? result : -result
+    return internalSortOrder.value === 'asc' ? result : -result
   })
 })
 
-const totalPages = computed(() => Math.max(1, Math.ceil(sortedRows.value.length / props.perPage)))
+const totalPages = computed(() => Math.max(1, Math.ceil(totalItems.value / props.perPage)))
 
-const paginatedRows = computed(() => {
-  const start = (currentPage.value - 1) * props.perPage
+const displayRows = computed(() => {
+  if (props.serverSide) return props.rows
+  const start = (internalPage.value - 1) * props.perPage
   return sortedRows.value.slice(start, start + props.perPage)
 })
 
+const rangeStart = computed(() => totalItems.value === 0 ? 0 : (currentPageLocal.value - 1) * props.perPage + 1)
+const rangeEnd = computed(() => Math.min(currentPageLocal.value * props.perPage, totalItems.value))
+
 const visiblePages = computed(() => {
   const total = totalPages.value
-  const current = currentPage.value
+  const current = currentPageLocal.value
   if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
 
   const pages = []
@@ -151,15 +167,32 @@ const visiblePages = computed(() => {
 })
 
 function rowId(row, index) {
-  return row.id ?? index + (currentPage.value - 1) * props.perPage
+  return row.id ?? index + (currentPageLocal.value - 1) * props.perPage
 }
 
 function toggleSort(key) {
-  if (sortKey.value === key) {
-    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+  if (props.serverSide) {
+    let newOrder = 'asc'
+    if (props.sortKey === key) {
+      newOrder = props.sortOrder === 'asc' ? 'desc' : 'asc'
+    }
+    emit('sort-change', { key, order: newOrder })
   } else {
-    sortKey.value = key
-    sortOrder.value = 'asc'
+    if (internalSortKey.value === key) {
+      internalSortOrder.value = internalSortOrder.value === 'asc' ? 'desc' : 'asc'
+    } else {
+      internalSortKey.value = key
+      internalSortOrder.value = 'asc'
+    }
+  }
+}
+
+function goToPage(page) {
+  if (page < 1 || page > totalPages.value) return
+  if (props.serverSide) {
+    emit('page-change', page)
+  } else {
+    internalPage.value = page
   }
 }
 
@@ -179,11 +212,11 @@ function toggleExpand(id) {
 }
 
 watch(totalPages, (total) => {
-  if (currentPage.value > total) currentPage.value = total
+  if (internalPage.value > total) internalPage.value = total
 })
 
 watch(() => props.rows, () => {
-  currentPage.value = 1
+  internalPage.value = 1
   expandedRows.value = new Set()
 })
 </script>
