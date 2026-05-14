@@ -28,6 +28,9 @@
       <span v-if="$slots.icon" class="absolute left-3 top-1/2 -translate-y-1/2 text-surface-400">
         <slot name="icon" />
       </span>
+      <span v-if="$slots.rightIcon" class="absolute right-3 top-1/2 -translate-y-1/2 text-surface-400">
+        <slot name="rightIcon" />
+      </span>
     </div>
     <p v-if="error" class="text-sm text-danger">{{ error }}</p>
     <p v-else-if="hint" class="text-xs text-surface-500">{{ hint }}</p>
@@ -35,7 +38,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, useSlots } from 'vue'
 
 const props = defineProps({
   modelValue: { type: [String, Number], default: '' },
@@ -52,6 +55,8 @@ const props = defineProps({
 
 defineEmits(['update:modelValue'])
 
+const slots = useSlots()
+
 const inputClasses = computed(() => [
   'w-full rounded-lg border bg-white px-3 py-2 text-sm transition-all duration-150',
   'placeholder:text-surface-400',
@@ -60,6 +65,7 @@ const inputClasses = computed(() => [
   props.error
     ? 'border-danger text-danger focus:ring-danger/30 focus:border-danger'
     : 'border-surface-300 text-surface-800',
-  props.$slots?.icon ? 'pl-10' : '',
+  slots.icon ? 'pl-10' : '',
+  slots.rightIcon ? 'pr-10' : '',
 ])
 </script>
