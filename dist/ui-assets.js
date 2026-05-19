@@ -135,8 +135,8 @@ var A = ["disabled"], j = {
 	stroke: "currentColor",
 	"stroke-width": "2"
 }, re = {
-	key: 0,
-	class: "absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1.5 text-xs font-medium text-white bg-surface-900 rounded-lg whitespace-normal z-10 w-max max-w-[220px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 shadow-lg"
+	key: 2,
+	class: "absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2.5 py-1.5 text-xs font-medium text-white bg-surface-900 rounded-lg whitespace-normal z-[1] w-max max-w-[220px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 shadow-lg"
 }, W = ["onClick"], G = {
 	key: 0,
 	class: "w-10 px-4 py-3"
@@ -282,10 +282,7 @@ var A = ["disabled"], j = {
 					"stroke-linejoin": "round",
 					d: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
 				}, null, -1)]])) : o("", !0),
-				u(n, { name: "tooltip" }, {
-					default: D(() => [e.tooltip ? (_(), s("span", re, [l(S(e.tooltip) + " ", 1), i[6] ||= c("span", { class: "absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-surface-900" }, null, -1)])) : o("", !0)]),
-					_: 2
-				}, 1024)
+				e.tooltip ? (_(), s("span", re, [l(S(e.tooltip) + " ", 1), i[6] ||= c("span", { class: "absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-surface-900" }, null, -1)])) : o("", !0)
 			], 2)], 10, B))), 128))])]),
 			(_(!0), s(e, null, b(N.value, (a, d) => (_(), s(e, { key: d }, [c("tr", {
 				class: p(["border-b border-surface-100 hover:bg-surface-50/50 transition-colors", { "cursor-pointer": t.expandable || t.clickable }]),
