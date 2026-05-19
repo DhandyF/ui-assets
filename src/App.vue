@@ -11,10 +11,10 @@ const showModal = ref(false)
 const activeTab = ref('overview')
 
 const tableColumns = [
-  { key: 'name', label: 'Name', sortable: true },
-  { key: 'role', label: 'Role', sortable: true },
+  { key: 'name', label: 'Name', sortable: true, tooltip: 'Full name of the team member' },
+  { key: 'role', label: 'Role', sortable: true, tooltip: 'Job title or position' },
   { key: 'status', label: 'Status', sortable: true },
-  { key: 'email', label: 'Email' },
+  { key: 'email', label: 'Email', tooltip: 'Official work email address' },
 ]
 
 const tableRows = [
