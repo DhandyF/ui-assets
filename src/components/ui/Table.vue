@@ -11,13 +11,20 @@
             :class="{ 'cursor-pointer select-none hover:text-surface-900': col.sortable }"
             @click="col.sortable && toggleSort(col.key)"
           >
-            <span class="inline-flex items-center gap-1.5">
+            <span class="inline-flex items-center gap-1.5" :class="{ 'relative group': col.tooltip }">
               {{ col.label }}
               <span v-if="col.sortable" class="text-surface-400">
                 <svg v-if="sortKey === col.key && sortOrder === 'asc'" class="w-3.5 h-3.5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
                 <svg v-else-if="sortKey === col.key && sortOrder === 'desc'" class="w-3.5 h-3.5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                 <svg v-else class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg>
               </span>
+              <svg v-if="col.tooltip" class="w-3.5 h-3.5 text-surface-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <Transition name="tooltip">
+                <span v-if="col.tooltip" class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1.5 text-xs font-medium text-white bg-surface-900 rounded-lg whitespace-normal z-10 w-max max-w-[220px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 shadow-lg">
+                  {{ col.tooltip }}
+                  <span class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-surface-900"></span>
+                </span>
+              </Transition>
             </span>
           </th>
         </tr>

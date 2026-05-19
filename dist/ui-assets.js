@@ -103,10 +103,10 @@ var A = ["disabled"], j = {
 }, L = { class: "overflow-x-auto" }, R = { class: "w-full text-left text-sm" }, ee = { class: "border-b border-surface-200 bg-surface-50" }, z = {
 	key: 0,
 	class: "w-10 px-4 py-3"
-}, B = ["onClick"], V = { class: "inline-flex items-center gap-1.5" }, H = {
+}, B = ["onClick"], V = {
 	key: 0,
 	class: "text-surface-400"
-}, U = {
+}, H = {
 	key: 0,
 	class: "w-3.5 h-3.5 text-primary-600",
 	fill: "none",
@@ -120,26 +120,36 @@ var A = ["disabled"], j = {
 	viewBox: "0 0 24 24",
 	stroke: "currentColor",
 	"stroke-width": "2"
-}, W = {
+}, ne = {
 	key: 2,
 	class: "w-3.5 h-3.5",
 	fill: "none",
 	viewBox: "0 0 24 24",
 	stroke: "currentColor",
 	"stroke-width": "2"
-}, ne = ["onClick"], G = {
+}, U = {
+	key: 1,
+	class: "w-3.5 h-3.5 text-surface-400",
+	fill: "none",
+	viewBox: "0 0 24 24",
+	stroke: "currentColor",
+	"stroke-width": "2"
+}, re = {
+	key: 0,
+	class: "absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1.5 text-xs font-medium text-white bg-surface-900 rounded-lg whitespace-normal z-10 w-max max-w-[220px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 shadow-lg"
+}, W = ["onClick"], G = {
 	key: 0,
 	class: "w-10 px-4 py-3"
-}, re = { key: 0 }, ie = ["colspan"], K = {
+}, ie = { key: 0 }, K = ["colspan"], q = {
 	key: 0,
 	class: "px-6 py-4 bg-surface-50/60 border-b border-surface-100"
-}, q = { key: 0 }, J = { class: "bg-surface-50" }, ae = {
+}, J = { key: 0 }, ae = { class: "bg-surface-50" }, oe = {
 	key: 0,
 	class: "px-4 py-3"
-}, oe = ["colspan"], se = { class: "flex items-center justify-between" }, ce = { class: "text-sm text-surface-500" }, le = { class: "flex items-center gap-1" }, ue = ["disabled"], de = {
+}, se = ["colspan"], ce = { class: "flex items-center justify-between" }, le = { class: "text-sm text-surface-500" }, ue = { class: "flex items-center gap-1" }, de = ["disabled"], fe = {
 	key: 0,
 	class: "inline-flex items-center justify-center w-8 h-8 text-sm text-surface-400"
-}, fe = ["onClick"], pe = ["disabled"], Y = {
+}, pe = ["onClick"], me = ["disabled"], Y = {
 	__name: "Table",
 	props: {
 		columns: {
@@ -252,19 +262,31 @@ var A = ["disabled"], j = {
 				key: e.key,
 				class: p(["px-4 py-3 font-semibold text-surface-600 whitespace-nowrap", { "cursor-pointer select-none hover:text-surface-900": e.sortable }]),
 				onClick: (t) => e.sortable && X(e.key)
-			}, [c("span", V, [l(S(e.label) + " ", 1), e.sortable ? (_(), s("span", H, [O.value === e.key && k.value === "asc" ? (_(), s("svg", U, [...i[2] ||= [c("path", {
-				"stroke-linecap": "round",
-				"stroke-linejoin": "round",
-				d: "M5 15l7-7 7 7"
-			}, null, -1)]])) : O.value === e.key && k.value === "desc" ? (_(), s("svg", te, [...i[3] ||= [c("path", {
-				"stroke-linecap": "round",
-				"stroke-linejoin": "round",
-				d: "M19 9l-7 7-7-7"
-			}, null, -1)]])) : (_(), s("svg", W, [...i[4] ||= [c("path", {
-				"stroke-linecap": "round",
-				"stroke-linejoin": "round",
-				d: "M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
-			}, null, -1)]]))])) : o("", !0)])], 10, B))), 128))])]),
+			}, [c("span", { class: p(["inline-flex items-center gap-1.5", { "relative group": e.tooltip }]) }, [
+				l(S(e.label) + " ", 1),
+				e.sortable ? (_(), s("span", V, [O.value === e.key && k.value === "asc" ? (_(), s("svg", H, [...i[2] ||= [c("path", {
+					"stroke-linecap": "round",
+					"stroke-linejoin": "round",
+					d: "M5 15l7-7 7 7"
+				}, null, -1)]])) : O.value === e.key && k.value === "desc" ? (_(), s("svg", te, [...i[3] ||= [c("path", {
+					"stroke-linecap": "round",
+					"stroke-linejoin": "round",
+					d: "M19 9l-7 7-7-7"
+				}, null, -1)]])) : (_(), s("svg", ne, [...i[4] ||= [c("path", {
+					"stroke-linecap": "round",
+					"stroke-linejoin": "round",
+					d: "M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
+				}, null, -1)]]))])) : o("", !0),
+				e.tooltip ? (_(), s("svg", U, [...i[5] ||= [c("path", {
+					"stroke-linecap": "round",
+					"stroke-linejoin": "round",
+					d: "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+				}, null, -1)]])) : o("", !0),
+				u(n, { name: "tooltip" }, {
+					default: D(() => [e.tooltip ? (_(), s("span", re, [l(S(e.tooltip) + " ", 1), i[6] ||= c("span", { class: "absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-surface-900" }, null, -1)])) : o("", !0)]),
+					_: 2
+				}, 1024)
+			], 2)], 10, B))), 128))])]),
 			(_(!0), s(e, null, b(N.value, (a, d) => (_(), s(e, { key: d }, [c("tr", {
 				class: p(["border-b border-surface-100 hover:bg-surface-50/50 transition-colors", { "cursor-pointer": t.expandable || t.clickable }]),
 				onClick: (e) => Q(a, d, e)
@@ -274,7 +296,7 @@ var A = ["disabled"], j = {
 				viewBox: "0 0 24 24",
 				stroke: "currentColor",
 				"stroke-width": "2"
-			}, [...i[5] ||= [c("path", {
+			}, [...i[7] ||= [c("path", {
 				"stroke-linecap": "round",
 				"stroke-linejoin": "round",
 				d: "M9 5l7 7-7 7"
@@ -284,29 +306,29 @@ var A = ["disabled"], j = {
 			}, [x(r.$slots, e.key, {
 				row: a,
 				value: a[e.key]
-			}, () => [l(S(a[e.key]), 1)])]))), 128))], 10, ne), t.expandable && f.value.has(Y(a, d)) ? (_(), s("tr", re, [c("td", {
+			}, () => [l(S(a[e.key]), 1)])]))), 128))], 10, W), t.expandable && f.value.has(Y(a, d)) ? (_(), s("tr", ie, [c("td", {
 				colspan: t.columns.length + 1,
 				class: "p-0"
 			}, [u(n, { name: "expand" }, {
-				default: D(() => [f.value.has(Y(a, d)) ? (_(), s("div", K, [x(r.$slots, "expanded", {
+				default: D(() => [f.value.has(Y(a, d)) ? (_(), s("div", q, [x(r.$slots, "expanded", {
 					row: a,
 					index: d
 				})])) : o("", !0)]),
 				_: 2
-			}, 1024)], 8, ie)])) : o("", !0)], 64))), 128)),
-			r.$slots.footer || M.value > 1 ? (_(), s("tfoot", q, [c("tr", J, [t.expandable ? (_(), s("td", ae)) : o("", !0), c("td", {
+			}, 1024)], 8, K)])) : o("", !0)], 64))), 128)),
+			r.$slots.footer || M.value > 1 ? (_(), s("tfoot", J, [c("tr", ae, [t.expandable ? (_(), s("td", oe)) : o("", !0), c("td", {
 				colspan: t.columns.length,
 				class: "px-4 py-3"
 			}, [x(r.$slots, "footer", {
 				totalPages: M.value,
 				currentPage: T.value,
 				totalItems: A.value
-			}, () => [c("div", se, [c("span", ce, S(P.value) + "-" + S(F.value) + " of " + S(A.value), 1), c("div", le, [
+			}, () => [c("div", ce, [c("span", le, S(P.value) + "-" + S(F.value) + " of " + S(A.value), 1), c("div", ue, [
 				c("button", {
 					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer", T.value === 1 ? "text-surface-300 cursor-not-allowed" : "text-surface-600 hover:bg-surface-100"]),
 					disabled: T.value === 1,
 					onClick: i[0] ||= (e) => Z(T.value - 1)
-				}, [...i[6] ||= [c("svg", {
+				}, [...i[8] ||= [c("svg", {
 					class: "w-4 h-4",
 					fill: "none",
 					viewBox: "0 0 24 24",
@@ -316,17 +338,17 @@ var A = ["disabled"], j = {
 					"stroke-linecap": "round",
 					"stroke-linejoin": "round",
 					d: "M15 19l-7-7 7-7"
-				})], -1)]], 10, ue),
-				(_(!0), s(e, null, b(I.value, (t) => (_(), s(e, { key: t }, [t === "..." ? (_(), s("button", de, "…")) : (_(), s("button", {
+				})], -1)]], 10, de),
+				(_(!0), s(e, null, b(I.value, (t) => (_(), s(e, { key: t }, [t === "..." ? (_(), s("button", fe, "…")) : (_(), s("button", {
 					key: 1,
 					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-medium transition-colors cursor-pointer", t === T.value ? "bg-primary-600 text-white" : "text-surface-600 hover:bg-surface-100"]),
 					onClick: (e) => Z(t)
-				}, S(t), 11, fe))], 64))), 128)),
+				}, S(t), 11, pe))], 64))), 128)),
 				c("button", {
 					class: p(["inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm transition-colors cursor-pointer", T.value === M.value ? "text-surface-300 cursor-not-allowed" : "text-surface-600 hover:bg-surface-100"]),
 					disabled: T.value === M.value,
 					onClick: i[1] ||= (e) => Z(T.value + 1)
-				}, [...i[7] ||= [c("svg", {
+				}, [...i[9] ||= [c("svg", {
 					class: "w-4 h-4",
 					fill: "none",
 					viewBox: "0 0 24 24",
@@ -336,8 +358,8 @@ var A = ["disabled"], j = {
 					"stroke-linecap": "round",
 					"stroke-linejoin": "round",
 					d: "M9 5l7 7-7 7"
-				})], -1)]], 10, pe)
-			])])])], 8, oe)])])) : o("", !0)
+				})], -1)]], 10, me)
+			])])])], 8, se)])])) : o("", !0)
 		])]));
 	}
 }, X = y([]), Z = 0;
@@ -354,10 +376,10 @@ function $(e) {
 	let t = X.value.findIndex((t) => t.id === e);
 	t !== -1 && X.value.splice(t, 1);
 }
-function me() {
+function he() {
 	X.value = [];
 }
-function he() {
+function ge() {
 	return {
 		toasts: X,
 		success: (e, t = {}) => Q({
@@ -381,15 +403,15 @@ function he() {
 			...t
 		}),
 		remove: $,
-		clear: me
+		clear: he
 	};
 }
 //#endregion
 //#region src/components/ui/Toast.vue
-var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
+var _e = { class: "mt-0.5 shrink-0" }, ve = { class: "flex-1 min-w-0" }, ye = {
 	key: 0,
 	class: "font-semibold text-sm"
-}, ye = { class: "text-sm opacity-80" }, be = ["onClick"], xe = {
+}, be = { class: "text-sm opacity-80" }, xe = ["onClick"], Se = {
 	__name: "Toast",
 	setup(n) {
 		let i = {
@@ -416,8 +438,8 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 				key: e.id,
 				class: p([l(e.type), "pointer-events-auto min-w-[320px] max-w-md rounded-xl shadow-lg border backdrop-blur-sm p-4 flex items-start gap-3"])
 			}, [
-				c("span", ge, S(i[e.type]), 1),
-				c("div", _e, [e.title ? (_(), s("p", ve, S(e.title), 1)) : o("", !0), c("p", ye, S(e.message), 1)]),
+				c("span", _e, S(i[e.type]), 1),
+				c("div", ve, [e.title ? (_(), s("p", ye, S(e.title), 1)) : o("", !0), c("p", be, S(e.message), 1)]),
 				c("button", {
 					class: "shrink-0 cursor-pointer text-current opacity-50 hover:opacity-100 transition-opacity",
 					onClick: (t) => C($)(e.id)
@@ -431,15 +453,15 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 					"stroke-linecap": "round",
 					"stroke-linejoin": "round",
 					d: "M6 18L18 6M6 6l12 12"
-				})], -1)]], 8, be)
+				})], -1)]], 8, xe)
 			], 2))), 128))]),
 			_: 1
 		})]));
 	}
-}, Se = {
+}, Ce = {
 	key: 0,
 	class: "w-1.5 h-1.5 rounded-full bg-current"
-}, Ce = {
+}, we = {
 	__name: "Badge",
 	props: {
 		variant: {
@@ -490,36 +512,36 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 			r[t.variant],
 			t.pill ? "rounded-full" : "rounded-md"
 		]);
-		return (t, n) => (_(), s("span", { class: p(a.value) }, [e.dot ? (_(), s("span", Se)) : o("", !0), x(t.$slots, "default")], 2));
+		return (t, n) => (_(), s("span", { class: p(a.value) }, [e.dot ? (_(), s("span", Ce)) : o("", !0), x(t.$slots, "default")], 2));
 	}
-}, we = { class: "space-y-1" }, Te = ["for"], Ee = {
+}, Te = { class: "space-y-1" }, Ee = ["for"], De = {
 	key: 0,
 	class: "text-danger"
-}, De = { class: "relative" }, Oe = [
+}, Oe = { class: "relative" }, ke = [
 	"id",
 	"value",
 	"placeholder",
 	"disabled",
 	"rows"
-], ke = [
+], Ae = [
 	"id",
 	"type",
 	"value",
 	"placeholder",
 	"disabled"
-], Ae = {
+], je = {
 	key: 2,
 	class: "absolute left-3 top-1/2 -translate-y-1/2 text-surface-400"
-}, je = {
+}, Me = {
 	key: 3,
 	class: "absolute right-3 top-1/2 -translate-y-1/2 text-surface-400"
-}, Me = {
+}, Ne = {
 	key: 1,
 	class: "text-sm text-danger"
-}, Ne = {
+}, Pe = {
 	key: 2,
 	class: "text-xs text-surface-500"
-}, Pe = {
+}, Fe = {
 	__name: "Input",
 	props: {
 		modelValue: {
@@ -574,13 +596,13 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 			n.icon ? "pl-10" : "",
 			n.rightIcon ? "pr-10" : ""
 		]);
-		return (t, n) => (_(), s("div", we, [
+		return (t, n) => (_(), s("div", Te, [
 			e.label ? (_(), s("label", {
 				key: 0,
 				for: e.id,
 				class: "block text-sm font-medium text-surface-700"
-			}, [l(S(e.label) + " ", 1), e.required ? (_(), s("span", Ee, "*")) : o("", !0)], 8, Te)) : o("", !0),
-			c("div", De, [
+			}, [l(S(e.label) + " ", 1), e.required ? (_(), s("span", De, "*")) : o("", !0)], 8, Ee)) : o("", !0),
+			c("div", Oe, [
 				e.type === "textarea" ? (_(), s("textarea", {
 					key: 0,
 					id: e.id,
@@ -590,7 +612,7 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 					rows: e.rows,
 					class: p(r.value),
 					onInput: n[0] ||= (e) => t.$emit("update:modelValue", e.target.value)
-				}, null, 42, Oe)) : (_(), s("input", {
+				}, null, 42, ke)) : (_(), s("input", {
 					key: 1,
 					id: e.id,
 					type: e.type,
@@ -599,14 +621,14 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 					disabled: e.disabled,
 					class: p(r.value),
 					onInput: n[1] ||= (e) => t.$emit("update:modelValue", e.target.value)
-				}, null, 42, ke)),
-				t.$slots.icon ? (_(), s("span", Ae, [x(t.$slots, "icon")])) : o("", !0),
-				t.$slots.rightIcon ? (_(), s("span", je, [x(t.$slots, "rightIcon")])) : o("", !0)
+				}, null, 42, Ae)),
+				t.$slots.icon ? (_(), s("span", je, [x(t.$slots, "icon")])) : o("", !0),
+				t.$slots.rightIcon ? (_(), s("span", Me, [x(t.$slots, "rightIcon")])) : o("", !0)
 			]),
-			e.error ? (_(), s("p", Me, S(e.error), 1)) : e.hint ? (_(), s("p", Ne, S(e.hint), 1)) : o("", !0)
+			e.error ? (_(), s("p", Ne, S(e.error), 1)) : e.hint ? (_(), s("p", Pe, S(e.hint), 1)) : o("", !0)
 		]));
 	}
-}, Fe = { class: "text-lg font-semibold text-surface-900" }, Ie = {
+}, Ie = { class: "text-lg font-semibold text-surface-900" }, Le = {
 	__name: "Modal",
 	props: {
 		modelValue: {
@@ -686,7 +708,7 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 					r.$slots.header || e.title ? (_(), s("div", {
 						key: 0,
 						class: p(["flex items-center justify-between px-6 py-4 border-b border-surface-200", e.headerClass])
-					}, [x(r.$slots, "header", {}, () => [c("h2", Fe, S(e.title), 1)]), e.closable ? (_(), s("button", {
+					}, [x(r.$slots, "header", {}, () => [c("h2", Ie, S(e.title), 1)]), e.closable ? (_(), s("button", {
 						key: 0,
 						class: "p-1.5 rounded-lg cursor-pointer text-surface-400 hover:text-surface-600 hover:bg-surface-100 transition-colors",
 						onClick: f
@@ -712,10 +734,10 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 			_: 3
 		})]));
 	}
-}, Le = { class: "mt-0.5 shrink-0" }, Re = { class: "flex-1 min-w-0" }, ze = {
+}, Re = { class: "mt-0.5 shrink-0" }, ze = { class: "flex-1 min-w-0" }, Be = {
 	key: 0,
 	class: "font-semibold text-sm"
-}, Be = { class: "text-sm opacity-90" }, Ve = {
+}, Ve = { class: "text-sm opacity-90" }, He = {
 	__name: "Alert",
 	props: {
 		variant: {
@@ -754,8 +776,8 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 			class: p(a.value),
 			role: "alert"
 		}, [
-			c("span", Le, S(n[e.variant]), 1),
-			c("div", Re, [e.title ? (_(), s("p", ze, S(e.title), 1)) : o("", !0), c("p", Be, [x(t.$slots, "default")])]),
+			c("span", Re, S(n[e.variant]), 1),
+			c("div", ze, [e.title ? (_(), s("p", Be, S(e.title), 1)) : o("", !0), c("p", Ve, [x(t.$slots, "default")])]),
 			e.closable ? (_(), s("button", {
 				key: 0,
 				class: "shrink-0 p-1 rounded-md cursor-pointer opacity-60 hover:opacity-100 transition-opacity",
@@ -773,7 +795,7 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 			})], -1)]])) : o("", !0)
 		], 2));
 	}
-}, He = { class: "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white border border-surface-300 rounded-lg hover:bg-surface-50 transition-colors" }, Ue = {
+}, Ue = { class: "inline-flex items-center gap-2 px-4 py-2 text-sm font-medium bg-white border border-surface-300 rounded-lg hover:bg-surface-50 transition-colors" }, We = {
 	__name: "Dropdown",
 	props: {
 		label: {
@@ -819,7 +841,7 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 		}, [c("div", {
 			class: "cursor-pointer",
 			onClick: f
-		}, [x(t.$slots, "trigger", {}, () => [c("button", He, [l(S(e.label) + " ", 1), m[0] ||= c("svg", {
+		}, [x(t.$slots, "trigger", {}, () => [c("button", Ue, [l(S(e.label) + " ", 1), m[0] ||= c("svg", {
 			class: "w-4 h-4 text-surface-500",
 			fill: "none",
 			viewBox: "0 0 24 24",
@@ -837,7 +859,7 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 			_: 3
 		})], 512));
 	}
-}, We = ["disabled"], Ge = ["href"], Ke = {
+}, Ge = ["disabled"], Ke = ["href"], qe = {
 	__name: "DropdownItem",
 	props: {
 		disabled: {
@@ -865,19 +887,19 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 			class: p(r.value),
 			disabled: e.disabled,
 			onClick: i[0] ||= (e) => t.$emit("click", C(n))
-		}, [x(t.$slots, "default")], 10, We)) : (_(), s("a", {
+		}, [x(t.$slots, "default")], 10, Ge)) : (_(), s("a", {
 			key: 1,
 			class: p(r.value),
 			href: e.href
-		}, [x(t.$slots, "default")], 10, Ge));
+		}, [x(t.$slots, "default")], 10, Ke));
 	}
-}, qe = {
+}, Je = {
 	class: "flex border-b border-surface-200",
 	role: "tablist"
-}, Je = ["aria-selected", "onClick"], Ye = {
+}, Ye = ["aria-selected", "onClick"], Xe = {
 	key: 0,
 	class: "mr-1.5"
-}, Xe = { class: "mt-4" }, Ze = {
+}, Ze = { class: "mt-4" }, Qe = {
 	__name: "Tabs",
 	props: {
 		tabs: {
@@ -895,34 +917,34 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 		function r(e) {
 			return ["px-4 py-2.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap cursor-pointer", n.modelValue === e ? "border-primary-600 text-primary-700" : "border-transparent text-surface-500 hover:text-surface-700 hover:border-surface-300"];
 		}
-		return (n, i) => (_(), s("div", null, [c("div", qe, [(_(!0), s(e, null, b(t.tabs, (e) => (_(), s("button", {
+		return (n, i) => (_(), s("div", null, [c("div", Je, [(_(!0), s(e, null, b(t.tabs, (e) => (_(), s("button", {
 			key: e.key,
 			class: p(r(e.key)),
 			role: "tab",
 			"aria-selected": t.modelValue === e.key,
 			onClick: (t) => n.$emit("update:modelValue", e.key)
-		}, [e.icon ? (_(), s("span", Ye, S(e.icon), 1)) : o("", !0), l(" " + S(e.label), 1)], 10, Je))), 128))]), c("div", Xe, [x(n.$slots, "default", { activeTab: t.modelValue })])]));
+		}, [e.icon ? (_(), s("span", Xe, S(e.icon), 1)) : o("", !0), l(" " + S(e.label), 1)], 10, Ye))), 128))]), c("div", Ze, [x(n.$slots, "default", { activeTab: t.modelValue })])]));
 	}
-}, Qe = {
-	key: 0,
-	class: "block text-sm font-medium text-surface-700 mb-1"
 }, $e = {
 	key: 0,
+	class: "block text-sm font-medium text-surface-700 mb-1"
+}, et = {
+	key: 0,
 	class: "text-danger"
-}, et = ["disabled"], tt = { class: "flex items-center gap-1 shrink-0" }, nt = { class: "border-b border-surface-200 p-2" }, rt = { class: "flex items-center gap-2 px-3 py-1.5 bg-surface-50 rounded-lg" }, it = ["placeholder"], at = {
+}, tt = ["disabled"], nt = { class: "flex items-center gap-1 shrink-0" }, rt = { class: "border-b border-surface-200 p-2" }, it = { class: "flex items-center gap-2 px-3 py-1.5 bg-surface-50 rounded-lg" }, at = ["placeholder"], ot = {
 	key: 0,
 	class: "px-4 py-3 text-sm text-surface-400 text-center"
-}, ot = ["onClick", "onMouseenter"], st = { class: "flex-1 truncate" }, ct = {
+}, st = ["onClick", "onMouseenter"], ct = { class: "flex-1 truncate" }, lt = {
 	key: 0,
 	class: "w-4 h-4 text-primary-600 shrink-0",
 	fill: "none",
 	viewBox: "0 0 24 24",
 	stroke: "currentColor",
 	"stroke-width": "2"
-}, lt = {
+}, ut = {
 	key: 1,
 	class: "text-sm text-danger mt-1"
-}, ut = {
+}, dt = {
 	__name: "SearchableDropdown",
 	props: {
 		modelValue: {
@@ -998,21 +1020,21 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 		function H(e) {
 			return V(e) === v.modelValue;
 		}
-		let U = i(() => [
+		let te = i(() => [
 			"inline-flex items-center gap-2 w-full px-4 py-2 text-sm font-medium bg-white border rounded-lg transition-colors",
 			"hover:bg-surface-50",
 			w.value ? "border-primary-500 ring-2 ring-primary-500/30" : "border-surface-300",
 			v.disabled ? "bg-surface-50 cursor-not-allowed opacity-50" : "cursor-pointer",
 			v.error ? "border-danger" : ""
 		]);
-		function te(e) {
+		function ne(e) {
 			return [
 				"flex items-center gap-2 px-3 py-2 text-sm cursor-pointer transition-colors",
 				e === j.value ? "bg-primary-50 text-primary-700" : "text-surface-700 hover:bg-surface-50",
 				"font-medium"
 			];
 		}
-		function W() {
+		function U() {
 			if (!P.value) return;
 			let e = P.value.getBoundingClientRect();
 			L.value = {
@@ -1021,15 +1043,15 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 				width: `${e.width}px`
 			};
 		}
-		function ne() {
+		function re() {
 			v.disabled || (w.value = !w.value, w.value && f(() => {
-				W(), M.value?.focus();
+				U(), M.value?.focus();
 			}));
 		}
-		function G(e) {
+		function W(e) {
 			C("update:modelValue", V(e)), w.value = !1, A.value = "", j.value = -1;
 		}
-		function re() {
+		function G() {
 			C("update:modelValue", null);
 		}
 		function ie(e) {
@@ -1041,7 +1063,7 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 					e.preventDefault(), j.value = Math.max(j.value - 1, 0), K();
 					break;
 				case "Enter":
-					e.preventDefault(), j.value >= 0 && j.value < z.value.length && G(z.value[j.value]);
+					e.preventDefault(), j.value >= 0 && j.value < z.value.length && W(z.value[j.value]);
 					break;
 				case "Escape":
 					w.value = !1, A.value = "", j.value = -1;
@@ -1064,7 +1086,7 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 			N.value?.contains(t) || F.value?.contains(t) || M.value !== t && (w.value = !1);
 		}
 		function J() {
-			w.value && W();
+			w.value && U();
 		}
 		return h(() => {
 			document.addEventListener("click", q, !0), window.addEventListener("scroll", J, !0), window.addEventListener("resize", J);
@@ -1075,17 +1097,17 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 			ref_key: "containerRef",
 			ref: N
 		}, [
-			r.label ? (_(), s("label", Qe, [l(S(r.label) + " ", 1), r.required ? (_(), s("span", $e, "*")) : o("", !0)])) : o("", !0),
+			r.label ? (_(), s("label", $e, [l(S(r.label) + " ", 1), r.required ? (_(), s("span", et, "*")) : o("", !0)])) : o("", !0),
 			c("button", {
 				ref_key: "triggerRef",
 				ref: P,
-				class: p(U.value),
+				class: p(te.value),
 				disabled: r.disabled,
-				onClick: ne
-			}, [c("span", { class: p(["flex-1 truncate text-left", R.value ? "text-surface-800" : "text-surface-400"]) }, S(R.value ? ee.value : r.placeholder), 3), c("div", tt, [r.clearable && R.value ? (_(), s("button", {
+				onClick: re
+			}, [c("span", { class: p(["flex-1 truncate text-left", R.value ? "text-surface-800" : "text-surface-400"]) }, S(R.value ? ee.value : r.placeholder), 3), c("div", nt, [r.clearable && R.value ? (_(), s("button", {
 				key: 0,
 				class: "p-0.5 rounded cursor-pointer text-surface-400 hover:text-surface-600 hover:bg-surface-100 transition-colors",
-				onClick: k(re, ["stop"])
+				onClick: k(G, ["stop"])
 			}, [...d[1] ||= [c("svg", {
 				class: "w-3.5 h-3.5",
 				fill: "none",
@@ -1106,11 +1128,11 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 				"stroke-linecap": "round",
 				"stroke-linejoin": "round",
 				d: "M19 9l-7 7-7-7"
-			}, null, -1)]], 2))])], 10, et),
+			}, null, -1)]], 2))])], 10, tt),
 			(_(), a(t, { to: "body" }, [u(n, {
 				name: "searchable-dropdown",
-				onBeforeEnter: W,
-				onEnter: W
+				onBeforeEnter: U,
+				onEnter: U
 			}, {
 				default: D(() => [w.value ? (_(), s("div", {
 					key: 0,
@@ -1119,7 +1141,7 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 					class: "fixed z-[9999] bg-white border border-surface-200 rounded-xl shadow-lg overflow-hidden",
 					style: m(L.value)
 				}, [
-					c("div", nt, [c("div", rt, [d[3] ||= c("svg", {
+					c("div", rt, [c("div", it, [d[3] ||= c("svg", {
 						class: "w-4 h-4 text-surface-400 shrink-0",
 						fill: "none",
 						viewBox: "0 0 24 24",
@@ -1136,46 +1158,46 @@ var ge = { class: "mt-0.5 shrink-0" }, _e = { class: "flex-1 min-w-0" }, ve = {
 						class: "w-full bg-transparent outline-none text-sm placeholder:text-surface-400",
 						placeholder: r.searchPlaceholder,
 						onKeydown: ie
-					}, null, 40, it), [[T, A.value]])])]),
-					z.value.length === 0 ? (_(), s("div", at, S(r.emptyText), 1)) : o("", !0),
+					}, null, 40, at), [[T, A.value]])])]),
+					z.value.length === 0 ? (_(), s("div", ot, S(r.emptyText), 1)) : o("", !0),
 					c("ul", {
 						class: "max-h-60 overflow-y-auto py-1",
 						ref_key: "listRef",
 						ref: I
 					}, [(_(!0), s(e, null, b(z.value, (e, t) => (_(), s("li", {
 						key: V(e),
-						class: p(te(t)),
-						onClick: (t) => G(e),
+						class: p(ne(t)),
+						onClick: (t) => W(e),
 						onMouseenter: (e) => j.value = t
 					}, [x(i.$slots, "option", {
 						option: e,
 						selected: H(e)
-					}, () => [c("span", st, S(B(e)), 1), H(e) ? (_(), s("svg", ct, [...d[4] ||= [c("path", {
+					}, () => [c("span", ct, S(B(e)), 1), H(e) ? (_(), s("svg", lt, [...d[4] ||= [c("path", {
 						"stroke-linecap": "round",
 						"stroke-linejoin": "round",
 						d: "M5 13l4 4L19 7"
-					}, null, -1)]])) : o("", !0)])], 42, ot))), 128))], 512)
+					}, null, -1)]])) : o("", !0)])], 42, st))), 128))], 512)
 				], 4)) : o("", !0)]),
 				_: 3
 			})])),
-			r.error ? (_(), s("p", lt, S(r.error), 1)) : o("", !0)
+			r.error ? (_(), s("p", ut, S(r.error), 1)) : o("", !0)
 		], 512));
 	}
-}, dt = {
+}, ft = {
 	Button: M,
 	Card: I,
 	Table: Y,
-	Toast: xe,
-	Badge: Ce,
-	Input: Pe,
-	Modal: Ie,
-	Alert: Ve,
-	Dropdown: Ue,
-	DropdownItem: Ke,
-	Tabs: Ze,
-	SearchableDropdown: ut
-}, ft = { install(e) {
-	for (let [t, n] of Object.entries(dt)) e.component(t, n);
+	Toast: Se,
+	Badge: we,
+	Input: Fe,
+	Modal: Le,
+	Alert: He,
+	Dropdown: We,
+	DropdownItem: qe,
+	Tabs: Qe,
+	SearchableDropdown: dt
+}, pt = { install(e) {
+	for (let [t, n] of Object.entries(ft)) e.component(t, n);
 } };
 //#endregion
-export { Ve as Alert, Ce as Badge, M as Button, I as Card, Ue as Dropdown, Ke as DropdownItem, Pe as Input, Ie as Modal, ut as SearchableDropdown, Y as Table, Ze as Tabs, xe as Toast, ft as default, he as useToast };
+export { He as Alert, we as Badge, M as Button, I as Card, We as Dropdown, qe as DropdownItem, Fe as Input, Le as Modal, dt as SearchableDropdown, Y as Table, Qe as Tabs, Se as Toast, pt as default, ge as useToast };
