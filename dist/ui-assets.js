@@ -136,7 +136,7 @@ var A = ["disabled"], j = {
 	"stroke-width": "2"
 }, re = {
 	key: 2,
-	class: "absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2.5 py-1.5 text-xs font-medium text-white bg-surface-900 rounded-lg whitespace-normal z-[1] w-max max-w-[220px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 shadow-lg"
+	class: "absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2.5 py-1.5 text-xs font-medium text-white bg-surface-900 rounded-lg z-[1] max-w-[220px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-150 shadow-lg text-balance"
 }, W = ["onClick"], G = {
 	key: 0,
 	class: "w-10 px-4 py-3"
